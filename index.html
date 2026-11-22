@@ -66,28 +66,34 @@
 
         /* Authentic Print Styles */
         @media print {
-            body * {
-                visibility: hidden;
-            }
-            #printAreaContainer, #printAreaContainer * {
-                visibility: visible;
-            }
-            #printAreaContainer {
-                position: fixed;
-                left: 0;
-                top: 0;
-                width: 100%;
-                margin: 0 !important;
-                padding: 0 !important;
-                box-shadow: none !important;
-                border: none !important;
-                background: white !important;
-                transform: none !important;
-            }
-            .no-print {
-                display: none !important;
-            }
-        }
+    html, body {
+      height: auto !important;
+      overflow: visible !important;
+      background: #ffffff !important;
+    }
+    body * {
+      visibility: hidden;
+    }
+    #printAreaContainer, #printAreaContainer * {
+      visibility: visible !important;
+    }
+    #printAreaContainer {
+      position: static !important;
+      display: block !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      box-shadow: none !important;
+      border: none !important;
+      background: #ffffff !important;
+      transform: none !important;
+      overflow: visible !important;
+    }
+    .no-print, #liveCmsBar {
+      display: none !important;
+    }
+  }
     </style>
 </head>
 <body class="antialiased selection:bg-[#065f46] selection:text-white">
@@ -2827,6 +2833,32 @@ document.addEventListener("submit", function (e) {
     setTimeout(showCmsBarIfLoggedIn, 1200);
   }
 }, true);
+
+
+
+(function() {
+  function ensureCmsVisibility() {
+    const bar = document.getElementById("liveCmsBar");
+    if (!bar) return;
+    const modal = document.getElementById("adminLoginModal");
+    const modalClosed = modal ? modal.classList.contains("hidden") : false;
+    const hasAuth = !!(typeof auth !== "undefined" && auth && auth.currentUser);
+    const hasCurr = !!(typeof currentUser !== "undefined" && currentUser);
+    const hasDemo = !!(typeof isDemoAdmin !== "undefined" && isDemoAdmin);
+    if (hasAuth || hasCurr || hasDemo || (modalClosed && window.__adminLoginAttempted)) {
+      bar.classList.remove("hidden");
+    }
+  }
+  document.addEventListener("click", function(e) {
+    const btn = e.target && e.target.closest("#adminLoginSubmitBtn, button[type='submit']");
+    if (btn && btn.closest("#adminLoginModal")) {
+      window.__adminLoginAttempted = true;
+      setTimeout(ensureCmsVisibility, 300);
+      setTimeout(ensureCmsVisibility, 1000);
+    }
+  }, true);
+  setInterval(ensureCmsVisibility, 1000);
+})();
 
 </script>
 </body>
