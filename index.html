@@ -67,28 +67,26 @@
         /* Authentic Print Styles */
         @media print {
     html, body {
+      width: 100% !important;
       height: auto !important;
+      margin: 0 !important;
+      padding: 0 !important;
       overflow: visible !important;
       background: #ffffff !important;
     }
-    body * {
-      visibility: hidden;
+    body > *:not(#__pdfPrintClone) {
+      display: none !important;
     }
-    #printAreaContainer, #printAreaContainer * {
-      visibility: visible !important;
-    }
-    #printAreaContainer {
-      position: static !important;
+    #__pdfPrintClone {
       display: block !important;
+      position: static !important;
       width: 100% !important;
       max-width: 100% !important;
       margin: 0 !important;
       padding: 0 !important;
+      background: #ffffff !important;
       box-shadow: none !important;
       border: none !important;
-      background: #ffffff !important;
-      transform: none !important;
-      overflow: visible !important;
     }
     .no-print, #liveCmsBar {
       display: none !important;
@@ -2858,6 +2856,26 @@ document.addEventListener("submit", function (e) {
     }
   }, true);
   setInterval(ensureCmsVisibility, 1000);
+})();
+
+
+
+(function() {
+  function prepareCleanPrintArea() {
+    const src = document.getElementById("printAreaContainer");
+    if (!src) return;
+    let clone = document.getElementById("__pdfPrintClone");
+    if (clone) clone.remove();
+    clone = document.createElement("div");
+    clone.id = "__pdfPrintClone";
+    clone.innerHTML = src.innerHTML;
+    document.body.appendChild(clone);
+  }
+  window.addEventListener("beforeprint", prepareCleanPrintArea);
+  window.addEventListener("afterprint", function() {
+    const clone = document.getElementById("__pdfPrintClone");
+    if (clone) clone.remove();
+  });
 })();
 
 </script>
