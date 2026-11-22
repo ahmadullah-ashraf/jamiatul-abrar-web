@@ -2248,6 +2248,29 @@
   </div>
 </section>
 
+
+<!-- LIVE_CMS_EDITOR_SAFE -->
+<div id="liveCmsBar" class="hidden fixed bottom-20 left-4 right-4 sm:left-auto sm:right-4 sm:w-auto z-50 bg-slate-900 text-white rounded-2xl shadow-xl border border-emerald-500/40 p-3 space-y-2">
+  <div class="flex items-center justify-between gap-3 text-xs font-semibold text-emerald-300">
+    <span>এডমিন লাইভ এডিটর (লেখা ও ছবি)</span>
+    <span id="cmsSaveStatus" class="text-amber-300 font-normal"></span>
+  </div>
+  <div class="flex flex-wrap items-center gap-2 text-xs">
+    <button type="button" id="cmsTextToggleBtn" onclick="toggleCmsTextEdit()" class="px-3 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-600 font-medium">
+      লেখা এডিট: বন্ধ
+    </button>
+    <button type="button" id="cmsImgToggleBtn" onclick="toggleCmsImgEdit()" class="px-3 py-1.5 rounded-lg bg-sky-700 hover:bg-sky-600 font-medium">
+      ছবি বদলান: বন্ধ
+    </button>
+    <button type="button" onclick="saveCmsToFirestore()" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold">
+      সেভ করুন
+    </button>
+    <button type="button" onclick="resetCmsFromFirestore()" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600">
+      রিলোড
+    </button>
+  </div>
+</div>
+
 </body></html>
             `;
             const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword' });
@@ -2620,6 +2643,149 @@ async function loadSafeFeedbackList() {
     box.innerHTML = '<p class="text-xs text-red-600">তালিকা দেখা যাচ্ছে না: ' + (err.message || "ত্রুটি") + '</p>';
   }
 }
+
+
+
+let cmsTextActive = false;
+let cmsImgActive = false;
+
+function getCmsDb() {
+  if (typeof db !== "undefined" && db) return db;
+  if (typeof firebase !== "undefined" && firebase.apps && firebase.apps.length) {
+    return firebase.firestore();
+  }
+  return null;
+}
+
+function getCmsAuth() {
+  if (typeof auth !== "undefined" && auth) return auth;
+  if (typeof firebase !== "undefined" && firebase.apps && firebase.apps.length) {
+    return firebase.auth();
+  }
+  return null;
+}
+
+function getCmsTargets() {
+  const bar = document.getElementById("liveCmsBar");
+  const fbBox = document.getElementById("feedback-box-section");
+  const texts = Array.from(document.querySelectorAll("h1, h2, h3, h4, p, li, span, a, label, option")).filter((el) => {
+    if (!el || !el.textContent || !el.textContent.trim()) return false;
+    if (bar && bar.contains(el)) return false;
+    if (fbBox && fbBox.contains(el)) return false;
+    if (el.closest("script, style")) return false;
+    return true;
+  });
+  const imgs = Array.from(document.querySelectorAll("img")).filter((img) => {
+    if (!img) return false;
+    if (bar && bar.contains(img)) return false;
+    return true;
+  });
+  return { texts, imgs };
+}
+
+function toggleCmsTextEdit() {
+  cmsTextActive = !cmsTextActive;
+  const { texts } = getCmsTargets();
+  texts.forEach((el) => {
+    el.contentEditable = cmsTextActive ? "true" : "false";
+    el.classList.toggle("outline-dashed", cmsTextActive);
+    el.classList.toggle("outline-1", cmsTextActive);
+    el.classList.toggle("outline-emerald-500", cmsTextActive);
+  });
+  const btn = document.getElementById("cmsTextToggleBtn");
+  if (btn) btn.textContent = cmsTextActive ? "লেখা এডিট: চালু" : "লেখা এডিট: বন্ধ";
+}
+
+function toggleCmsImgEdit() {
+  cmsImgActive = !cmsImgActive;
+  const { imgs } = getCmsTargets();
+  imgs.forEach((img) => {
+    img.style.cursor = cmsImgActive ? "pointer" : "";
+    img.classList.toggle("ring-4", cmsImgActive);
+    img.classList.toggle("ring-sky-500", cmsImgActive);
+    img.onclick = cmsImgActive ? function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const nextUrl = prompt("নতুন ছবির লিংক (URL) দিন:", img.getAttribute("src") || "");
+      if (nextUrl && nextUrl.trim()) {
+        img.setAttribute("src", nextUrl.trim());
+      }
+    } : null;
+  });
+  const btn = document.getElementById("cmsImgToggleBtn");
+  if (btn) btn.textContent = cmsImgActive ? "ছবি বদলান: চালু" : "ছবি বদলান: বন্ধ";
+}
+
+async function saveCmsToFirestore() {
+  const statusEl = document.getElementById("cmsSaveStatus");
+  const cmsDb = getCmsDb();
+  if (!cmsDb) {
+    if (statusEl) statusEl.textContent = "Firestore নেই";
+    return;
+  }
+  if (statusEl) statusEl.textContent = "সেভ হচ্ছে...";
+  const { texts, imgs } = getCmsTargets();
+  const textList = texts.map((el) => el.textContent);
+  const imgList = imgs.map((img) => img.getAttribute("src") || "");
+  try {
+    await cmsDb.collection("site_content").doc("homepage").set({
+      texts: textList,
+      imgs: imgList,
+      updatedAt: new Date().toISOString()
+    }, { merge: true });
+    if (statusEl) statusEl.textContent = "সেভ হয়েছে!";
+  } catch (err) {
+    console.error("CMS save error:", err);
+    if (statusEl) statusEl.textContent = "সেভ হয়নি";
+  }
+}
+
+async function applyCmsFromFirestore() {
+  const cmsDb = getCmsDb();
+  if (!cmsDb) return;
+  try {
+    const doc = await cmsDb.collection("site_content").doc("homepage").get();
+    if (!doc.exists) return;
+    const data = doc.data() || {};
+    const { texts, imgs } = getCmsTargets();
+    if (Array.isArray(data.texts)) {
+      data.texts.forEach((val, i) => {
+        if (texts[i] && typeof val === "string") {
+          texts[i].textContent = val;
+        }
+      });
+    }
+    if (Array.isArray(data.imgs)) {
+      data.imgs.forEach((src, i) => {
+        if (imgs[i] && typeof src === "string" && src.trim()) {
+          imgs[i].setAttribute("src", src.trim());
+        }
+      });
+    }
+  } catch (err) {
+    console.warn("CMS load skipped:", err);
+  }
+}
+
+function resetCmsFromFirestore() {
+  applyCmsFromFirestore();
+  const statusEl = document.getElementById("cmsSaveStatus");
+  if (statusEl) statusEl.textContent = "রিলোড হয়েছে";
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  setTimeout(applyCmsFromFirestore, 600);
+  const cmsAuth = getCmsAuth();
+  if (cmsAuth && typeof cmsAuth.onAuthStateChanged === "function") {
+    cmsAuth.onAuthStateChanged((user) => {
+      const bar = document.getElementById("liveCmsBar");
+      if (bar) {
+        if (user) bar.classList.remove("hidden");
+        else bar.classList.add("hidden");
+      }
+    });
+  }
+});
 
 </script>
 </body>
