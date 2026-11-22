@@ -2122,7 +2122,70 @@
             const sourceHTML = `
                 <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
                 <head><meta charset='utf-8'><title>${escapeHtml(currentPaper.book)}</title></head>
-                <body style="font-family: 'Noto Serif Bengali', 'Amiri', serif;">${content}</body></html>
+                <body style="font-family: 'Noto Serif Bengali', 'Amiri', serif;">${content}
+<!-- FEEDBACK_BOX_SAFE -->
+<section id="feedback-box-section" class="max-w-4xl mx-auto my-8 px-4">
+  <div class="bg-white rounded-2xl shadow border border-gray-200 p-6">
+    <div class="flex items-center justify-between gap-2 mb-4">
+      <div>
+        <h2 class="text-xl font-bold text-emerald-900">অভিযোগ ও পরামর্শ বক্স</h2>
+        <p class="text-xs text-gray-600 mt-0.5">মাদ্রাসা নিয়ে আপনার অভিযোগ বা পরামর্শ জমা দিন (শুধু এডমিন দেখতে পারবেন)।</p>
+      </div>
+      <button type="button" onclick="toggleFeedbackAdmin()" class="text-xs px-3 py-1.5 rounded-lg border border-emerald-700 text-emerald-800">
+        এডমিন ভিউ
+      </button>
+    </div>
+
+    <form id="safeFeedbackForm" onsubmit="submitSafeFeedback(event)" class="space-y-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">ধরন</label>
+          <select id="sfType" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">
+            <option value="পরামর্শ">পরামর্শ</option>
+            <option value="অভিযোগ">অভিযোগ</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-medium text-gray-700 mb-1">নাম ও পরিচয় (ঐচ্ছিক)</label>
+          <input id="sfSender" type="text" placeholder="বেনামী রাখতে পারেন" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+        </div>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-700 mb-1">মোবাইল বা ইমেইল (ঐচ্ছিক)</label>
+        <input id="sfContact" type="text" placeholder="01XXXXXXXXX বা ইমেইল" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-700 mb-1">বিস্তারিত লিখুন *</label>
+        <textarea id="sfMessage" rows="4" required placeholder="আপনার অভিযোগ বা পরামর্শ বিস্তারিত লিখুন..." class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"></textarea>
+      </div>
+      <div class="flex items-center gap-3">
+        <button type="submit" id="sfSubmitBtn" class="px-4 py-2 rounded-lg bg-emerald-700 text-white text-sm font-medium">জমা দিন</button>
+        <span id="sfStatus" class="text-xs font-medium"></span>
+      </div>
+    </form>
+
+    <div id="sfAdminPanel" class="hidden mt-6 pt-5 border-t border-gray-200">
+      <h3 class="text-sm font-bold text-gray-800 mb-2">এডমিন তালিকা</h3>
+      <div id="sfLoginBox" class="space-y-2 max-w-sm">
+        <input id="sfAdminEmail" type="email" placeholder="এডমিন ইমেইল" class="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm" />
+        <input id="sfAdminPass" type="password" placeholder="পাসওয়ার্ড" class="w-full rounded-lg border border-gray-300 px-3 py-1.5 text-sm" />
+        <div class="flex items-center gap-2">
+          <button type="button" onclick="loginFeedbackAdmin()" class="px-3 py-1.5 rounded-lg bg-gray-900 text-white text-xs font-medium">লগইন</button>
+          <span id="sfLoginMsg" class="text-xs text-red-600"></span>
+        </div>
+      </div>
+      <div id="sfListBox" class="hidden mt-3 space-y-2">
+        <div class="flex justify-between items-center">
+          <span class="text-xs text-emerald-700 font-medium">এডমিন লগইন আছে</span>
+          <button type="button" onclick="logoutFeedbackAdmin()" class="text-xs text-red-600">লগআউট</button>
+        </div>
+        <div id="sfItems" class="space-y-2"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body></html>
             `;
             const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword' });
             const url = URL.createObjectURL(blob);
@@ -2371,6 +2434,95 @@
             document.getElementById('infoModalBody').textContent = body;
             openModal('infoModal');
         }
-    </script>
+    
+
+function toggleFeedbackAdmin() {
+  const panel = document.getElementById("sfAdminPanel");
+  if (panel) panel.classList.toggle("hidden");
+}
+
+async function submitSafeFeedback(e) {
+  e.preventDefault();
+  const statusEl = document.getElementById("sfStatus");
+  const btn = document.getElementById("sfSubmitBtn");
+  const msg = (document.getElementById("sfMessage")?.value || "").trim();
+  if (!msg) return;
+
+  if (typeof db === "undefined" || !db) {
+    if (statusEl) { statusEl.className = "text-xs text-red-600"; statusEl.textContent = "Firestore পাওয়া যায়নি।"; }
+    return;
+  }
+
+  if (btn) btn.disabled = true;
+  if (statusEl) { statusEl.className = "text-xs text-gray-600"; statusEl.textContent = "জমা হচ্ছে..."; }
+
+  try {
+    await db.collection("complaints_suggestions").add({
+      type: document.getElementById("sfType")?.value || "পরামর্শ",
+      sender: (document.getElementById("sfSender")?.value || "").trim() || "বেনামী",
+      contact: (document.getElementById("sfContact")?.value || "").trim() || "নেই",
+      message: msg,
+      createdAt: new Date().toISOString()
+    });
+    e.target.reset();
+    if (statusEl) { statusEl.className = "text-xs text-emerald-700"; statusEl.textContent = "সফলভাবে জমা হয়েছে।"; }
+  } catch (err) {
+    if (statusEl) { statusEl.className = "text-xs text-red-600"; statusEl.textContent = "জমা দিতে সমস্যা হয়েছে।"; }
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function loginFeedbackAdmin() {
+  const msgEl = document.getElementById("sfLoginMsg");
+  if (msgEl) msgEl.textContent = "";
+  const email = (document.getElementById("sfAdminEmail")?.value || "").trim();
+  const pass = document.getElementById("sfAdminPass")?.value || "";
+  if (typeof auth === "undefined" || !auth) {
+    if (msgEl) msgEl.textContent = "Auth পাওয়া যায়নি।";
+    return;
+  }
+  try {
+    await auth.signInWithEmailAndPassword(email, pass);
+    document.getElementById("sfLoginBox")?.classList.add("hidden");
+    document.getElementById("sfListBox")?.classList.remove("hidden");
+    loadSafeFeedbackList();
+  } catch (err) {
+    if (msgEl) msgEl.textContent = "লগইন ব্যর্থ হয়েছে।";
+  }
+}
+
+async function logoutFeedbackAdmin() {
+  if (typeof auth !== "undefined" && auth) await auth.signOut();
+  document.getElementById("sfLoginBox")?.classList.remove("hidden");
+  document.getElementById("sfListBox")?.classList.add("hidden");
+}
+
+async function loadSafeFeedbackList() {
+  const box = document.getElementById("sfItems");
+  if (!box || typeof db === "undefined" || !db) return;
+  box.innerHTML = '<p class="text-xs text-gray-500">লোড হচ্ছে...</p>';
+  try {
+    const snap = await db.collection("complaints_suggestions").orderBy("createdAt", "desc").get();
+    if (snap.empty) {
+      box.innerHTML = '<p class="text-xs text-gray-500">কোনো তথ্য নেই।</p>';
+      return;
+    }
+    let html = "";
+    snap.forEach((doc) => {
+      const d = doc.data();
+      html += '<div class="p-3 rounded-lg border border-gray-200 bg-gray-50 text-xs space-y-1">' +
+        '<div class="flex justify-between font-semibold"><span>' + (d.type || "") + '</span><span class="text-gray-500 font-normal">' + (d.createdAt || "") + '</span></div>' +
+        '<p class="text-gray-800 whitespace-pre-line">' + (d.message || "") + '</p>' +
+        '<p class="text-gray-500">প্রেরক: ' + (d.sender || "-") + ' | যোগাযোগ: ' + (d.contact || "-") + '</p>' +
+        '</div>';
+    });
+    box.innerHTML = html;
+  } catch (err) {
+    box.innerHTML = '<p class="text-xs text-red-600">তালিকা দেখা যাচ্ছে না।</p>';
+  }
+}
+
+</script>
 </body>
 </html>
