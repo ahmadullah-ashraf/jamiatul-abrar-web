@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+<html lang="bn" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#065f46">
+    <meta name="description" content="জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স - নলাগড়িয়া, ভাকুর্তা, সাভার, ঢাকা। কুরআন-সুন্নাহর আলোকে আদর্শ মানুষ গড়ার প্রতিষ্ঠান।">
+    <title>জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স</title>
+
+    <!-- Google Fonts: Hind Siliguri, Noto Serif Bengali & Amiri (Arabic RTL) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Hind+Siliguri:wght@300;400;500;600;700&family=Noto+Serif+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Hind Siliguri"', 'sans-serif'],
+                        serifBn: ['"Noto Serif Bengali"', 'serif'],
+                        arabic: ['"Amiri"', 'serif'],
+                    },
+                    colors: {
+                        emerald: {
+                            850: '#045740',
+                            900: '#064e3b',
+                            950: '#022c22',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Firebase Compat SDKs (Auth + Firestore) for single-file reliability -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .hero-bg {
+            background: linear-gradient(180deg, rgba(6, 95, 70, 0.86) 0%, rgba(2, 44, 34, 0.94) 100%),
+                        url('https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1400&q=80') center/cover no-repeat;
+        }
+
+        .drawer-enter { transform: translateX(0%); }
+        .drawer-exit { transform: translateX(100%); }
+
+        /* Exam Paper Typography */
+        .exam-paper-bn { font-family: 'Noto Serif Bengali', 'Hind Siliguri', serif; }
+        .exam-paper-ar { font-family: 'Amiri', serif; direction: rtl; text-align: right; }
+        .exam-paper-en { font-family: 'Times New Roman', Georgia, serif; direction: ltr; text-align: left; }
+
+        /* Authentic Print Styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #printAreaContainer, #printAreaContainer * {
+                visibility: visible;
+            }
+            #printAreaContainer {
+                position: fixed;
+                left: 0;
+                top: 0;
+                width: 100%;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border: none !important;
+                background: white !important;
+                transform: none !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-[#065f46] selection:text-white">
+
+    <!-- ==================== STICKY TOP NAVBAR ==================== -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-emerald-100 shadow-sm no-print">
+        <div class="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between gap-2">
+            <!-- Brand Logo & Title -->
+            <a href="#home" onclick="showPublicPortal()" class="flex items-center gap-2.5 min-w-0 group">
+                <div class="w-10 h-10 rounded-full bg-[#065f46] flex items-center justify-center text-white shrink-0 shadow-sm group-hover:bg-emerald-700 transition">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                        <path d="M19 3v4"/><path d="M21 5h-4"/>
+                    </svg>
+                </div>
+                <div class="truncate">
+                    <h1 class="text-base sm:text-lg md:text-xl font-bold text-[#065f46] leading-tight truncate">
+                        জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স
+                    </h1>
+                    <p class="text-[11px] text-slate-500 hidden sm:block">নলাগড়িয়া, ভাকুর্তা, সাভার, ঢাকা</p>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation -->
+            <nav class="hidden lg:flex items-center gap-4 text-sm font-medium text-slate-700">
+                <a href="#home" onclick="showPublicPortal()" class="hover:text-[#065f46] transition">হোম</a>
+                <a href="#about" onclick="showPublicPortal()" class="hover:text-[#065f46] transition">পরিচিতি</a>
+                <a href="#departments" onclick="showPublicPortal()" class="hover:text-[#065f46] transition">বিভাগসমূহ</a>
+                <a href="#gallery" onclick="showPublicPortal()" class="hover:text-[#065f46] transition">গ্যালারি</a>
+                <a href="#notices" onclick="showPublicPortal()" class="hover:text-[#065f46] transition">নোটিশ বোর্ড</a>
+                <a href="#admission" onclick="showPublicPortal()" class="hover:text-[#065f46] transition">ভর্তি তথ্য</a>
+                <button onclick="openGuardianModal()" class="px-3 py-1.5 rounded-lg bg-emerald-50 text-[#065f46] font-semibold hover:bg-emerald-100 transition">
+                    অভিভাবক অ্যাপ
+                </button>
+                <button onclick="openAdminGate()" class="px-3.5 py-1.5 rounded-lg bg-[#065f46] text-white font-semibold hover:bg-emerald-800 transition flex items-center gap-1.5">
+                    <i data-lucide="lock" class="w-3.5 h-3.5"></i> অ্যাডমিন
+                </button>
+            </nav>
+
+            <!-- Right Controls: Install Icon + Drawer Menu -->
+            <div class="flex items-center gap-1.5 shrink-0">
+                <button onclick="triggerInstallApp()" title="অ্যাপ ইনস্টল করুন" class="p-2.5 rounded-xl text-[#065f46] hover:bg-emerald-50 active:scale-95 transition flex items-center gap-1.5">
+                    <i data-lucide="download" class="w-5 h-5"></i>
+                    <span class="hidden md:inline text-xs font-semibold">ইনস্টল</span>
+                </button>
+                <button onclick="toggleDrawer(true)" title="মেনু" class="p-2.5 rounded-xl text-slate-800 hover:bg-slate-100 active:scale-95 transition">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== SLIDE-OUT NAVIGATION DRAWER ==================== -->
+    <div id="drawerBackdrop" onclick="toggleDrawer(false)" class="fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 hidden transition-opacity opacity-0 no-print"></div>
+    <aside id="navDrawer" class="fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white z-50 shadow-2xl drawer-exit transition-transform duration-300 ease-out flex flex-col no-print">
+        <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between bg-emerald-50/60">
+            <div class="flex items-center gap-2.5">
+                <div class="w-9 h-9 rounded-full bg-[#065f46] flex items-center justify-center text-white">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                    </svg>
+                </div>
+                <span class="font-bold text-emerald-950 text-sm leading-snug">জামিয়াতুল আবরার<br><span class="text-xs font-normal text-slate-600">আনোয়ারা কমপ্লেক্স</span></span>
+            </div>
+            <button onclick="toggleDrawer(false)" class="p-2 rounded-lg text-slate-500 hover:bg-slate-200/70 transition">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <div class="flex-1 overflow-y-auto py-3 px-4 space-y-1 text-[15px] font-medium text-slate-700">
+            <a href="#home" onclick="toggleDrawer(false); showPublicPortal();" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-emerald-50 hover:text-[#065f46] transition">
+                <i data-lucide="home" class="w-4 h-4 text-[#065f46]"></i> হোম
+            </a>
+            <a href="#about" onclick="toggleDrawer(false); showPublicPortal();" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-emerald-50 hover:text-[#065f46] transition">
+                <i data-lucide="building-2" class="w-4 h-4 text-[#065f46]"></i> পরিচিতি ও পরিবেশ
+            </a>
+            <a href="#departments" onclick="toggleDrawer(false); showPublicPortal();" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-emerald-50 hover:text-[#065f46] transition">
+                <i data-lucide="book-open" class="w-4 h-4 text-[#065f46]"></i> বিভাগসমূহ
+            </a>
+            <a href="#gallery" onclick="toggleDrawer(false); showPublicPortal();" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-emerald-50 hover:text-[#065f46] transition">
+                <i data-lucide="images" class="w-4 h-4 text-[#065f46]"></i> গ্যালারি ও 'আনদিয়াতুত তুল্লাব'
+            </a>
+            <a href="#notices" onclick="toggleDrawer(false); showPublicPortal();" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-emerald-50 hover:text-[#065f46] transition">
+                <i data-lucide="bell" class="w-4 h-4 text-[#065f46]"></i> নোটিশ বোর্ড
+            </a>
+            <a href="#admission" onclick="toggleDrawer(false); showPublicPortal();" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-emerald-50 hover:text-[#065f46] transition">
+                <i data-lucide="file-text" class="w-4 h-4 text-[#065f46]"></i> ভর্তি তথ্য ও আবেদন
+            </a>
+            <a href="#contact" onclick="toggleDrawer(false); showPublicPortal();" class="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-emerald-50 hover:text-[#065f46] transition">
+                <i data-lucide="map-pin" class="w-4 h-4 text-[#065f46]"></i> যোগাযোগ ও যাতায়াত
+            </a>
+
+            <div class="my-2 border-t border-slate-100"></div>
+
+            <button onclick="toggleDrawer(false); triggerInstallApp();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-emerald-50 text-[#065f46] font-semibold transition">
+                <i data-lucide="smartphone" class="w-4 h-4 text-[#065f46]"></i> Chrome-এ খুলুন / ইনস্টল করুন
+            </button>
+            <button onclick="toggleDrawer(false); openGuardianModal();" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-emerald-50 text-slate-800 font-semibold transition">
+                <i data-lucide="user-check" class="w-4 h-4 text-[#065f46]"></i> অভিভাবক অ্যাপ ও তথ্য যাচাই
+            </button>
+            <button onclick="toggleDrawer(false); openAdminGate();" class="w-full flex items-center gap-3 px-3 py-3 rounded-xl bg-[#065f46] text-white font-bold hover:bg-emerald-800 transition mt-2 shadow-sm">
+                <i data-lucide="shield-check" class="w-4 h-4 text-amber-300"></i> অ্যাডমিন ড্যাশবোর্ড ও প্রশ্ন তৈরি
+            </button>
+        </div>
+
+        <div class="bg-emerald-950 text-emerald-200 px-5 py-4 text-xs">
+            <p>© ২০২৬ জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স</p>
+        </div>
+    </aside>
+
+    <!-- ==================== PUBLIC PORTAL MAIN CONTENT ==================== -->
+    <main id="publicPortalView" class="no-print">
+        <!-- 1. HERO BANNER -->
+        <section id="home" class="hero-bg relative text-white py-20 sm:py-28 px-4 overflow-hidden">
+            <div class="max-w-4xl mx-auto text-center relative z-10">
+                <p class="font-arabic text-2xl sm:text-3xl md:text-4xl text-amber-300/95 mb-4 tracking-wide drop-shadow">
+                    بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ
+                </p>
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 drop-shadow-md">
+                    জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স
+                </h2>
+                <p class="text-base sm:text-lg md:text-xl text-emerald-100/95 max-w-2xl mx-auto leading-relaxed mb-3">
+                    কুরআন-সুন্নাহর আলোকে আদর্শ মানুষ গড়ার প্রতিষ্ঠান
+                </p>
+                <div class="inline-flex flex-wrap items-center justify-center gap-1.5 bg-white/10 backdrop-blur-xs border border-white/20 px-4 py-1.5 rounded-full text-xs sm:text-sm text-emerald-50 mb-8">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-amber-300"></i>
+                    <span>নলাগড়িয়া, ভাকুর্তা, সাভার, ঢাকা</span>
+                    <span class="mx-1">•</span>
+                    <span class="text-amber-300 font-semibold">৪.৪ ★ (৩৩টি গুগল রিভিউ)</span>
+                </div>
+
+                <div class="flex flex-wrap items-center justify-center gap-3.5 sm:gap-4">
+                    <a href="#admission" class="px-7 py-3.5 rounded-xl bg-[#065f46] hover:bg-emerald-700 text-white font-semibold text-base shadow-lg border border-emerald-400/40 transition active:scale-95">
+                        ভর্তি তথ্য
+                    </a>
+                    <a href="#about" class="px-7 py-3.5 rounded-xl bg-emerald-50 hover:bg-white text-emerald-950 font-semibold text-base shadow-lg transition active:scale-95">
+                        আমাদের সম্পর্কে
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. GUARDIAN APP PWA CARD -->
+        <section class="max-w-4xl mx-auto px-4 -mt-8 relative z-20 mb-14">
+            <div class="bg-white rounded-2xl shadow-xl shadow-slate-200/70 border border-emerald-100 p-6 sm:p-8">
+                <div class="flex items-start gap-4 sm:gap-5 mb-5">
+                    <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-[#065f46] flex items-center justify-center text-white shrink-0 shadow-md">
+                        <i data-lucide="smartphone" class="w-7 h-7 sm:w-8 sm:h-8"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap">
+                            <h3 class="text-xl sm:text-2xl font-bold text-[#065f46]">অভিভাবক অ্যাপ</h3>
+                            <span id="liveCloudBadge" class="text-[11px] font-semibold bg-emerald-100 text-[#065f46] px-2.5 py-0.5 rounded-full">Firestore Sync Active</span>
+                        </div>
+                        <p class="text-slate-600 text-sm sm:text-base mt-1 leading-relaxed">
+                            মাদরাসার নোটিশ, উপস্থিতি ও শিক্ষার্থীর তথ্য মোবাইলে দেখুন।
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <button onclick="triggerInstallApp()" class="w-full py-3.5 px-5 rounded-xl bg-[#065f46] hover:bg-emerald-800 text-white font-semibold text-sm sm:text-base flex items-center justify-center gap-2.5 shadow-md transition active:scale-[0.99]">
+                        <i data-lucide="download" class="w-5 h-5"></i>
+                        <span>Chrome-এ খুলুন / ইনস্টল করুন</span>
+                    </button>
+                    <button onclick="openGuardianModal()" class="w-full py-3.5 px-5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-200 font-semibold text-sm sm:text-base flex items-center justify-center gap-2.5 transition active:scale-[0.99]">
+                        <i data-lucide="user-check" class="w-5 h-5 text-[#065f46]"></i>
+                        <span>রোল অনুযায়ী উপস্থিতি ও তথ্য দেখুন</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. DISTINCTIVE FEATURES & ENVIRONMENT -->
+        <section id="features" class="max-w-6xl mx-auto px-4 py-8 sm:py-12">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-bold tracking-wider uppercase text-[#065f46] bg-emerald-100/80 px-3 py-1 rounded-full">আমাদের স্বকীয়তা</span>
+                <h2 class="text-2xl sm:text-3xl md:text-4xl font-bold text-slate-900 mt-3 leading-snug">
+                    যে সকল বৈশিষ্ট্যে জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স অনন্য
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-sm hover:border-emerald-300 transition">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-[#065f46] flex items-center justify-center mb-4">
+                        <i data-lucide="book-open-check" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">কুরআন-সুন্নাহভিত্তিক শিক্ষা</h3>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                        পবিত্র কুরআন ও রাসূলুল্লাহ ﷺ-এর সুন্নাহর আলোকে শিক্ষার্থীদের বিশুদ্ধ দ্বীনি শিক্ষায় শিক্ষিত করে তোলা আমাদের অন্যতম লক্ষ্য। সহিহ আকিদা, বিশুদ্ধ আমল, উত্তম চরিত্র ও ইসলামী মূল্যবোধের সমন্বয়ে আদর্শ মানুষ গড়ে তোলা হয়।
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-sm hover:border-emerald-300 transition">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-[#065f46] flex items-center justify-center mb-4">
+                        <i data-lucide="trees" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">শান্ত ও কোলাহলমুক্ত পরিবেশ</h3>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                        সাভারের ভাকুর্তার নলাগড়িয়া এলাকায় অবস্থিত হলেও প্রতিষ্ঠানটি শহরের কোলাহল ও নানা জঞ্জালমুক্ত একটি শান্ত ও নিভৃত পরিবেশে গড়ে উঠেছে। গুগলে ৩৩টি রিভিউয়ের ভিত্তিতে এর গড় রেটিং ৪.৪।
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-sm hover:border-emerald-300 transition">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-[#065f46] flex items-center justify-center mb-4">
+                        <i data-lucide="award" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">সহশিক্ষা ও অঙ্গসংগঠন 'আনদিয়াতুত তুল্লাব'</h3>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                        দ্বীনি শিক্ষার পাশাপাশি বার্ষিক ইসলামী মহাসম্মেলন, ওলামায়ে কেরামের মিলনমেলা এবং শিক্ষার্থীদের জন্য শিক্ষাসফরের আয়োজন করা হয়। শিক্ষার্থীদের দক্ষতা ও সৃজনশীলতা বিকাশে <strong class="text-[#065f46]">'আনদিয়াতুত তুল্লাব'</strong> নামে একটি অঙ্গসংগঠন রয়েছে।
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200/80 shadow-sm hover:border-emerald-300 transition">
+                    <div class="w-12 h-12 rounded-xl bg-emerald-50 text-[#065f46] flex items-center justify-center mb-4">
+                        <i data-lucide="accessibility" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-2">সুবিধাসমূহ ও হুইলচেয়ার প্রবেশযোগ্যতা</h3>
+                    <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                        কমপ্লেক্সে ওয়াশরুম সুবিধা এবং সম্পূর্ণ হুইলচেয়ার প্রবেশযোগ্যতা (প্রবেশপথ, পার্কিং ও ওয়াশরুম) রয়েছে। দর্শনার্থীদের মতে এটি শহরের নিকটে অবস্থান করেও একটি প্রশান্তিময় ও পরিচ্ছন্ন পরিবেশ বজায় রাখে।
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. ABOUT SECTION -->
+        <section id="about" class="bg-emerald-950 text-white py-12 px-4 my-8">
+            <div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-7 space-y-4">
+                    <span class="inline-block text-xs font-semibold bg-emerald-900 text-amber-300 px-3 py-1 rounded-full border border-emerald-700">পরিচিতি</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold">জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স</h2>
+                    <p class="text-emerald-100/90 text-sm sm:text-base leading-relaxed">
+                        সাভারের ভাকুর্তার নলাগড়িয়া এলাকায় অবস্থিত একটি দ্বীনি শিক্ষাপ্রতিষ্ঠান ও কমপ্লেক্স। মাদানী নেসাব ও বেফাকের সমন্বয়ে প্রথম বর্ষ থেকে পঞ্চম বর্ষ (ইবতেদায়ী থেকে শরহে বেকায়া) পর্যন্ত পাঠদান, বার্ষিক ইসলামী মহাসম্মেলন, ওলামায়ে কেরামের মিলনমেলা, শিক্ষাসফর এবং 'আনদিয়াতুত তুল্লাব' অঙ্গসংগঠনের মাধ্যমে শিক্ষার্থীদের বহুমুখী প্রতিভা বিকাশে কাজ করে যাচ্ছে।
+                    </p>
+                </div>
+                <div class="lg:col-span-5 grid grid-cols-2 gap-3">
+                    <div class="bg-emerald-900/70 border border-emerald-800 rounded-xl p-4 text-center">
+                        <div class="text-amber-300 font-bold text-2xl">৪.৪ ★</div>
+                        <div class="text-xs text-emerald-200 mt-1">৩৩টি গুগল রিভিউ</div>
+                    </div>
+                    <div class="bg-emerald-900/70 border border-emerald-800 rounded-xl p-4 text-center">
+                        <div class="text-white font-bold text-2xl">৪টি</div>
+                        <div class="text-xs text-emerald-200 mt-1">শিক্ষাবিভাগ</div>
+                    </div>
+                    <div class="bg-emerald-900/70 border border-emerald-800 rounded-xl p-4 text-center">
+                        <div class="text-white font-bold text-xl">হুইলচেয়ার</div>
+                        <div class="text-xs text-emerald-200 mt-1">প্রবেশপথ, পার্কিং ও ওয়াশরুম</div>
+                    </div>
+                    <div class="bg-emerald-900/70 border border-emerald-800 rounded-xl p-4 text-center">
+                        <div class="text-white font-bold text-xl">Qmmsoft</div>
+                        <div class="text-xs text-emerald-200 mt-1">পোর্টাল ও ফলাফল তথ্য</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. ACADEMIC DEPARTMENTS -->
+        <section id="departments" class="max-w-6xl mx-auto px-4 py-10">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-bold tracking-wider uppercase text-[#065f46] bg-emerald-100/80 px-3 py-1 rounded-full">বিভাগসমূহ</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-3">আমাদের শিক্ষাবিভাগ ও বিশেষত্ব</h2>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between hover:border-emerald-400 transition">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-[#065f46] text-white flex items-center justify-center font-bold mb-4">১</div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">নূরানী বিভাগ</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">সহিহ-শুদ্ধ কুরআন তিলাওয়াত, মাসনুন দোয়া, নামাজ শিক্ষা এবং প্রাথমিক বাংলা, ইংরেজি ও গণিতের বুনিয়াদি পাঠদান।</p>
+                    </div>
+                    <a href="#admission" onclick="selectDepartment('নূরানী বিভাগ')" class="w-full py-2.5 rounded-xl bg-emerald-50 hover:bg-[#065f46] text-[#065f46] hover:text-white text-center text-sm font-semibold transition">ভর্তি আবেদন</a>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between hover:border-emerald-400 transition">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-[#065f46] text-white flex items-center justify-center font-bold mb-4">২</div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">তাহফিযুল কুরআন বিভাগ</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">তাজবীদ ও মাখরাজ ঠিক রেখে অভিজ্ঞ হাফেজ শিক্ষকদের তত্ত্বাবধানে সম্পূর্ণ পবিত্র কুরআন হিফয ও মশক।</p>
+                    </div>
+                    <a href="#admission" onclick="selectDepartment('তাহফিযুল কুরআন বিভাগ')" class="w-full py-2.5 rounded-xl bg-emerald-50 hover:bg-[#065f46] text-[#065f46] hover:text-white text-center text-sm font-semibold transition">ভর্তি আবেদন</a>
+                </div>
+
+                <div class="bg-white rounded-2xl border-2 border-[#065f46] p-6 flex flex-col justify-between shadow-md relative">
+                    <span class="absolute -top-3 right-4 bg-[#065f46] text-white text-[11px] font-semibold px-2.5 py-0.5 rounded-full">মাদানী নেসাব ও বেফাক</span>
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-[#065f46] text-white flex items-center justify-center font-bold mb-4">৩</div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">কিতাব বিভাগ</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">মাদানী নেসাব ও বেফাকের সমন্বয়ে <strong>প্রথম বর্ষ থেকে পঞ্চম বর্ষ (ইবতেদায়ী থেকে শরহে বেকায়া)</strong> পর্যন্ত পাঠদান।</p>
+                    </div>
+                    <a href="#admission" onclick="selectDepartment('কিতাব বিভাগ (১ম - ৫ম বর্ষ)')" class="w-full py-2.5 rounded-xl bg-[#065f46] hover:bg-emerald-800 text-white text-center text-sm font-semibold transition">ভর্তি আবেদন</a>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col justify-between hover:border-emerald-400 transition">
+                    <div>
+                        <div class="w-10 h-10 rounded-xl bg-[#065f46] text-white flex items-center justify-center font-bold mb-4">৪</div>
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">তালীমুদ্দীন একাডেমী</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-4">বিশুদ্ধ কুরআন শিক্ষা, জরুরি দ্বীনি মাসআলা-মাসায়েল এবং আধুনিক শিক্ষার সমন্বয়ে বিশেষ একাডেমিক কার্যক্রম।</p>
+                    </div>
+                    <a href="#admission" onclick="selectDepartment('তালীমুদ্দীন একাডেমী')" class="w-full py-2.5 rounded-xl bg-emerald-50 hover:bg-[#065f46] text-[#065f46] hover:text-white text-center text-sm font-semibold transition">ভর্তি আবেদন</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. GALLERY & 'ANDIYATUT TULLAB' -->
+        <section id="gallery" class="max-w-6xl mx-auto px-4 py-10">
+            <div class="text-center max-w-2xl mx-auto mb-8">
+                <span class="text-xs font-bold tracking-wider uppercase text-[#065f46] bg-emerald-100/80 px-3 py-1 rounded-full">কার্যক্রম ও গ্যালারি</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 mt-3">মহাসম্মেলন, শিক্ষাসফর ও 'আনদিয়াতুত তুল্লাব'</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-xs">
+                    <img src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=800&q=80"
+                         onerror="this.src='https://placehold.co/800x500/065f46/ffffff?text=Annual+Islamic+Conference'"
+                         alt="বার্ষিক ইসলামী মহাসম্মেলন" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h3 class="font-bold text-slate-900 text-base mb-1">বার্ষিক ইসলামী মহাসম্মেলন ও মিলনমেলা</h3>
+                        <p class="text-xs sm:text-sm text-slate-600">বরেণ্য ওলামায়ে কেরামের উপস্থিতিতে বার্ষিক ইসলামী মহাসম্মেলন ও ওলামায়ে কেরামের মিলনমেলা অনুষ্ঠিত হয়।</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-xs">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80"
+                         onerror="this.src='https://placehold.co/800x500/065f46/ffffff?text=Andiyatut+Tullab'"
+                         alt="আনদিয়াতুত তুল্লাব" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h3 class="font-bold text-slate-900 text-base mb-1">অঙ্গসংগঠন 'আনদিয়াতুত তুল্লাব'</h3>
+                        <p class="text-xs sm:text-sm text-slate-600">শিক্ষার্থীদের দক্ষতা ও সৃজনশীলতা বিকাশে 'আনদিয়াতুত তুল্লাব' বক্তৃতা, লেখালেখি ও সৃজনশীল কার্যক্রম পরিচালনা করে।</p>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl overflow-hidden border border-slate-200 shadow-xs">
+                    <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=80"
+                         onerror="this.src='https://placehold.co/800x500/065f46/ffffff?text=Educational+Tour'"
+                         alt="শিক্ষাসফর" class="w-full h-48 object-cover">
+                    <div class="p-5">
+                        <h3 class="font-bold text-slate-900 text-base mb-1">শিক্ষার্থীদের শিক্ষাসফর</h3>
+                        <p class="text-xs sm:text-sm text-slate-600">শিক্ষার্থীদের মানসিক প্রশান্তি, ভ্রাতৃত্ববোধ ও জ্ঞানের পরিধি বাড়াতে নিয়মিত শিক্ষাসফরের আয়োজন করা হয়।</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. NOTICE BOARD -->
+        <section id="notices" class="max-w-5xl mx-auto px-4 py-8">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
+                <div class="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-slate-100">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-[#065f46] flex items-center justify-center">
+                            <i data-lucide="bell-ring" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl sm:text-2xl font-bold text-slate-900">নোটিশ বোর্ড</h2>
+                            <p class="text-xs sm:text-sm text-slate-500">মাদরাসার সাম্প্রতিক ঘোষণা ও বিজ্ঞপ্তিসমূহ</p>
+                        </div>
+                    </div>
+                    <button onclick="openAdminGate()" class="text-xs sm:text-sm font-semibold text-[#065f46] bg-emerald-50 hover:bg-emerald-100 px-3.5 py-2 rounded-xl border border-emerald-200 transition flex items-center gap-1.5">
+                        <i data-lucide="lock" class="w-3.5 h-3.5"></i> অ্যাডমিন লগইন
+                    </button>
+                </div>
+                <div id="noticeList" class="space-y-3"></div>
+            </div>
+        </section>
+
+        <!-- 8. ONLINE ADMISSION FORM -->
+        <section id="admission" class="max-w-5xl mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <div class="lg:col-span-5 bg-[#065f46] text-white rounded-2xl p-6 sm:p-8 flex flex-col justify-between">
+                    <div>
+                        <span class="inline-block text-xs font-semibold bg-emerald-800 text-emerald-100 px-3 py-1 rounded-full mb-3">ভর্তি চলছে</span>
+                        <h2 class="text-2xl font-bold mb-3">ভর্তি সংক্রান্ত তথ্য</h2>
+                        <p class="text-emerald-100 text-sm leading-relaxed mb-5">
+                            নূরানী, তাহফিযুল কুরআন, কিতাব বিভাগ (মাদানী নেসাব ও বেফাক: প্রথম বর্ষ থেকে পঞ্চম বর্ষ / শরহে বেকায়া) এবং তালীমুদ্দীন একাডেমীতে ভর্তি চলছে।
+                        </p>
+                        <div class="bg-emerald-950/50 p-3.5 rounded-xl border border-emerald-700/60 text-xs text-emerald-100 space-y-1.5">
+                            <p><strong class="text-amber-300">প্রয়োজনীয় কাগজপত্র:</strong> জন্ম নিবন্ধন কপি, ২ কপি ছবি ও অভিভাবকের এনআইডি কপি।</p>
+                            <p><strong class="text-amber-300">পোর্টাল ও পেজ:</strong> ভর্তি, ফলাফল বা কার্যক্রমের জন্য জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স ফেসবুক পেজ অথবা Qmmsoft পোর্টাল দেখতে পারেন।</p>
+                        </div>
+                    </div>
+                    <div class="mt-6 pt-4 border-t border-emerald-700 text-xs text-emerald-200">
+                        ঠিকানা: নলাগড়িয়া, ভাকুর্তা, সাভার, ঢাকা
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">
+                    <h3 class="text-xl font-bold text-slate-900 mb-1">অনলাইন ভর্তি আবেদন ফরম</h3>
+                    <p class="text-xs text-slate-500 mb-5">আবেদন জমা দিলে Firestore-এ সংরক্ষিত হবে এবং অ্যাডমিন প্যানেলে দেখা যাবে</p>
+
+                    <form id="admissionForm" onsubmit="handleAdmissionSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold text-slate-700 mb-1">বিভাগ নির্বাচন করুন *</label>
+                            <select id="appDept" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#065f46] outline-none text-sm bg-white">
+                                <option value="নূরানী বিভাগ">নূরানী বিভাগ</option>
+                                <option value="তাহফিযুল কুরআন বিভাগ">তাহফিযুল কুরআন বিভাগ</option>
+                                <option value="কিতাব বিভাগ (১ম - ৫ম বর্ষ)">কিতাব বিভাগ (মাদানী নেসাব ও বেফাক: ১ম - ৫ম বর্ষ)</option>
+                                <option value="তালীমুদ্দীন একাডেমী">তালীমুদ্দীন একাডেমী</option>
+                            </select>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">শিক্ষার্থীর নাম *</label>
+                                <input type="text" id="appStudentName" required placeholder="মুহাম্মদ আব্দুল্লাহ" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#065f46] outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">পূর্ববর্তী শ্রেণি / পারা</label>
+                                <input type="text" id="appPrevClass" placeholder="নাজেরা / ৩য় শ্রেণি" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#065f46] outline-none text-sm">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">অভিভাবকের নাম *</label>
+                                <input type="text" id="appGuardianName" required placeholder="পিতা / অভিভাবকের নাম" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#065f46] outline-none text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-slate-700 mb-1">মোবাইল নম্বর *</label>
+                                <input type="tel" id="appPhone" required placeholder="01XXXXXXXXX" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 focus:border-[#065f46] outline-none text-sm">
+                            </div>
+                        </div>
+
+                        <button type="submit" class="w-full py-3 rounded-xl bg-[#065f46] hover:bg-emerald-800 text-white font-semibold text-sm sm:text-base shadow-md transition">
+                            আবেদন জমা দিন
+                        </button>
+                    </form>
+
+                    <div id="admissionReceipt" class="hidden mt-5 p-4 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-950">
+                        <div class="font-bold text-[#065f46] text-sm mb-1">✓ আবেদন সফলভাবে জমা হয়েছে!</div>
+                        <div id="receiptDetails" class="text-xs space-y-1 text-slate-700"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. CONTACT & FOOTER -->
+        <section id="contact" class="max-w-5xl mx-auto px-4 py-8 mb-6">
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+                <div class="space-y-2 text-sm text-slate-700">
+                    <h3 class="text-xl font-bold text-slate-900">যোগাযোগ ও অবস্থান</h3>
+                    <p><strong>ঠিকানা:</strong> নলাগড়িয়া, ভাকুর্তা, সাভার, ঢাকা</p>
+                    <p><strong>সুবিধাসমূহ:</strong> ওয়াশরুম সুবিধা ও হুইলচেয়ার প্রবেশযোগ্যতা (প্রবেশপথ, পার্কিং ও ওয়াশরুম) • গুগল রেটিং ৪.৪ ★ (৩৩ রিভিউ)</p>
+                </div>
+                <div class="flex flex-wrap gap-3 shrink-0">
+                    <a href="https://maps.google.com/?q=নলাগড়িয়া+ভাকুর্তা+সাভার+ঢাকা" target="_blank" rel="noopener" class="px-4 py-2.5 rounded-xl bg-[#065f46] hover:bg-emerald-800 text-white text-sm font-semibold inline-flex items-center gap-2 transition">
+                        <i data-lucide="map-pin" class="w-4 h-4"></i> গুগল ম্যাপ
+                    </a>
+                    <button onclick="openGuardianModal()" class="px-4 py-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-950 border border-emerald-200 text-sm font-semibold inline-flex items-center gap-2 transition">
+                        <i data-lucide="external-link" class="w-4 h-4"></i> Qmmsoft পোর্টাল
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <footer class="bg-emerald-950 text-emerald-200 py-8 px-4 text-center text-xs sm:text-sm">
+            <p>© ২০২৬ জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স। সর্বস্বত্ব সংরক্ষিত।</p>
+            <p class="text-emerald-400/80 text-xs mt-1">নলাগড়িয়া, ভাকুর্তা, সাভার, ঢাকা</p>
+        </footer>
+    </main>
+
+    <!-- ==================== ADMIN DASHBOARD (FIREBASE AUTH + FIRESTORE / DEMO FALLBACK) ==================== -->
+    <section id="adminDashboardView" class="hidden min-h-screen bg-slate-100 pb-20">
+        <!-- Admin Top Bar -->
+        <div class="bg-emerald-950 text-white px-4 py-3.5 shadow-md sticky top-0 z-30 no-print">
+            <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-[#065f46] flex items-center justify-center text-amber-300">
+                        <i data-lucide="shield-check" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h2 class="font-bold text-sm sm:text-base leading-tight">অ্যাডমিন ড্যাশবোর্ড</h2>
+                        <p id="adminAuthStatusText" class="text-[11px] text-emerald-300">জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="showPublicPortal()" class="px-3 py-1.5 rounded-lg bg-emerald-900 hover:bg-emerald-800 text-xs font-medium text-emerald-100 border border-emerald-700 transition">
+                        ওয়েবসাইট দেখুন
+                    </button>
+                    <button onclick="logoutAdmin()" class="px-3.5 py-1.5 rounded-lg bg-rose-600 hover:bg-rose-500 text-xs font-bold text-white transition flex items-center gap-1">
+                        <i data-lucide="log-out" class="w-3.5 h-3.5"></i> লগআউট
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Main Navigation Tabs -->
+        <div class="max-w-6xl mx-auto px-4 pt-5 no-print">
+            <div class="grid grid-cols-3 gap-2 bg-white p-1.5 rounded-2xl shadow-xs border border-slate-200 mb-6">
+                <button id="adminTabExam" onclick="switchAdminMainTab('exam')" class="py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold bg-[#065f46] text-white shadow-xs transition flex items-center justify-center gap-1.5">
+                    <i data-lucide="file-pen-line" class="w-4 h-4"></i>
+                    <span>প্রশ্নপত্র তৈরি ও প্রশ্নব্যাংক</span>
+                </button>
+                <button id="adminTabNotices" onclick="switchAdminMainTab('notices')" class="py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-50 transition flex items-center justify-center gap-1.5">
+                    <i data-lucide="bell" class="w-4 h-4"></i>
+                    <span>নোটিশ পরিচালনা</span>
+                </button>
+                <button id="adminTabAdmissions" onclick="switchAdminMainTab('admissions')" class="py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-50 transition flex items-center justify-center gap-1.5">
+                    <i data-lucide="users" class="w-4 h-4"></i>
+                    <span>ভর্তি আবেদন (<span id="adminBadgeCount">0</span>)</span>
+                </button>
+            </div>
+
+            <!-- ==================== SUB-MODULE A: QUESTION PAPER GENERATOR & BANK ==================== -->
+            <div id="adminModuleExam">
+                <div class="bg-slate-900 text-white rounded-2xl p-4 sm:p-5 mb-5 shadow-lg flex flex-wrap items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/30 text-sky-300 flex items-center justify-center">
+                            <i data-lucide="book-marked" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-base sm:text-lg text-sky-300">প্রশ্নপত্র তৈরি ও প্রশ্নব্যাংক</h3>
+                            <p class="text-xs text-slate-300">আরবি, বাংলা, গণিত ও ইংরেজি প্রশ্ন তৈরি, Firestore সিঙ্ক, প্রিন্ট ও Word ডাউনলোড</p>
+                        </div>
+                    </div>
+                    <button id="backToExamHomeBtn" onclick="showExamSubView('home')" class="hidden px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-sky-300 border border-slate-700 transition">
+                        ← ড্যাশবোর্ড মেনুতে ফিরুন
+                    </button>
+                </div>
+
+                <!-- VIEW 0: EXAM DASHBOARD GRID MENU -->
+                <div id="examViewHome" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <button onclick="startNewPaper()" class="bg-slate-900 hover:bg-slate-800 text-white rounded-2xl p-6 text-left border border-slate-800 shadow-md transition group">
+                        <div class="w-12 h-12 rounded-2xl bg-sky-500/20 text-sky-400 flex items-center justify-center mb-4 group-hover:scale-105 transition">
+                            <i data-lucide="plus-circle" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">নতুন প্রশ্নপত্র তৈরি</h4>
+                        <p class="text-xs text-slate-400 mt-1">পরীক্ষার বিবরণ ও নতুন প্রশ্ন সেট তৈরি করুন</p>
+                    </button>
+
+                    <button onclick="showExamSubView('bank')" class="bg-slate-900 hover:bg-slate-800 text-white rounded-2xl p-6 text-left border border-slate-800 shadow-md transition group relative">
+                        <span id="bankCountBadge" class="absolute top-5 right-5 px-2.5 py-0.5 rounded-full bg-sky-500/20 text-sky-300 text-xs font-bold">0</span>
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-4 group-hover:scale-105 transition">
+                            <i data-lucide="database" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">প্রশ্নব্যাংক</h4>
+                        <p class="text-xs text-slate-400 mt-1">সংরক্ষিত প্রশ্নগুলো থেকে প্রশ্ন নির্বাচন ও যুক্ত করুন</p>
+                    </button>
+
+                    <button onclick="showExamSubView('saved')" class="bg-slate-900 hover:bg-slate-800 text-white rounded-2xl p-6 text-left border border-slate-800 shadow-md transition group relative">
+                        <span id="savedPapersBadge" class="absolute top-5 right-5 px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold">0</span>
+                        <div class="w-12 h-12 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-4 group-hover:scale-105 transition">
+                            <i data-lucide="folder-open" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">সংরক্ষিত প্রশ্নপত্র</h4>
+                        <p class="text-xs text-slate-400 mt-1">পূর্বের প্রশ্নপত্র প্রিভিউ, এডিট ও প্রিন্ট করুন</p>
+                    </button>
+
+                    <button onclick="showExamSubView('settings')" class="bg-slate-900 hover:bg-slate-800 text-white rounded-2xl p-6 text-left border border-slate-800 shadow-md transition group">
+                        <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center mb-4 group-hover:scale-105 transition">
+                            <i data-lucide="graduation-cap" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">জামাত ও কিতাব সেটিংস</h4>
+                        <p class="text-xs text-slate-400 mt-1">জামাত/শ্রেণি ও কিতাবের নাম ম্যানেজ করুন</p>
+                    </button>
+
+                    <button onclick="showExamSubView('backup')" class="bg-slate-900 hover:bg-slate-800 text-white rounded-2xl p-6 text-left border border-slate-800 shadow-md transition group">
+                        <div class="w-12 h-12 rounded-2xl bg-teal-500/20 text-teal-400 flex items-center justify-center mb-4 group-hover:scale-105 transition">
+                            <i data-lucide="cloud-upload" class="w-6 h-6"></i>
+                        </div>
+                        <h4 class="text-lg font-bold text-white">ব্যাকআপ ও রিস্টোর</h4>
+                        <p class="text-xs text-slate-400 mt-1">অফলাইন JSON ফাইল এক্সপোর্ট ও ইম্পোর্ট করুন</p>
+                    </button>
+                </div>
+
+                <!-- VIEW 1: 3-STEP QUESTION PAPER WIZARD -->
+                <div id="examViewWizard" class="hidden space-y-5">
+                    <div class="bg-white rounded-2xl p-3 border border-slate-200 grid grid-cols-3 gap-2 text-center text-xs sm:text-sm font-bold">
+                        <button id="stepBtn1" onclick="goToWizardStep(1)" class="py-2 rounded-xl bg-[#065f46] text-white transition">
+                            ১. পরীক্ষার মূল তথ্য
+                        </button>
+                        <button id="stepBtn2" onclick="goToWizardStep(2)" class="py-2 rounded-xl bg-slate-100 text-slate-600 transition">
+                            ২. প্রশ্ন তৈরি
+                        </button>
+                        <button id="stepBtn3" onclick="goToWizardStep(3)" class="py-2 rounded-xl bg-slate-100 text-slate-600 transition">
+                            ৩. প্রিভিউ ও প্রিন্ট
+                        </button>
+                    </div>
+
+                    <!-- STEP 1: EXAM METADATA -->
+                    <div id="wizardStep1" class="bg-white rounded-2xl p-6 border border-slate-200 shadow-xs space-y-5">
+                        <div>
+                            <label class="block text-sm font-bold text-slate-800 mb-2">প্রশ্নের ভাষা নির্বাচন করুন *</label>
+                            <div class="grid grid-cols-3 gap-2.5">
+                                <button type="button" id="langBtnBn" onclick="setPaperLanguage('bn')" class="py-2.5 rounded-xl border-2 border-[#065f46] bg-emerald-50 text-emerald-950 font-bold text-sm transition">
+                                    বাংলা (BD)
+                                </button>
+                                <button type="button" id="langBtnEn" onclick="setPaperLanguage('en')" class="py-2.5 rounded-xl border border-slate-300 bg-white text-slate-700 font-bold text-sm transition">
+                                    English (GB)
+                                </button>
+                                <button type="button" id="langBtnAr" onclick="setPaperLanguage('ar')" class="py-2.5 rounded-xl border border-slate-300 bg-white text-slate-700 font-bold text-sm font-arabic transition">
+                                    العربية (SA)
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">প্রতিষ্ঠানের নাম</label>
+                                <input type="text" id="qpInstName" value="জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold focus:border-[#065f46] outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">প্রতিষ্ঠানের ঠিকানা</label>
+                                <input type="text" id="qpInstAddress" value="নলাগড়িয়া, ভাকুর্তা, সাভার, ঢাকা।" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-[#065f46] outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">জামাত / শ্রেণি</label>
+                                <select id="qpJamat" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:border-[#065f46] outline-none"></select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">কিতাব / বইয়ের নাম</label>
+                                <select id="qpBook" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:border-[#065f46] outline-none"></select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">বিষয় / পত্র</label>
+                                <input type="text" id="qpSubject" value="আরবী ভাষা" placeholder="যেমন: আরবী ভাষা / বাংলা / গণিত" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-[#065f46] outline-none">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">পরীক্ষার নাম</label>
+                                <select id="qpExamName" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:border-[#065f46] outline-none">
+                                    <option value="১ম সাময়িক পরীক্ষা">১ম সাময়িক পরীক্ষা</option>
+                                    <option value="২য় সাময়িক পরীক্ষা">২য় সাময়িক পরীক্ষা</option>
+                                    <option value="বার্ষিক পরীক্ষা" selected>বার্ষিক পরীক্ষা</option>
+                                    <option value="মাসিক পরীক্ষা">মাসিক পরীক্ষা</option>
+                                    <option value="الامتحان السنوي">الامتحان السنوي (আরবি)</option>
+                                    <option value="Annual Examination">Annual Examination (English)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">পরীক্ষার তারিখ</label>
+                                <input type="text" id="qpDate" value="২২/১১/২০২৬" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-[#065f46] outline-none">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-slate-600 mb-1">শিক্ষাবর্ষ (কাস্টমাইজযোগ্য)</label>
+                            <input type="text" id="qpSession" value="২০২৬" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm mb-2 focus:border-[#065f46] outline-none">
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" onclick="setSessionChip('২০২৬')" class="px-3 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-[#065f46] border border-emerald-200 text-xs font-semibold">২০২৬</button>
+                                <button type="button" onclick="setSessionChip('২০২৬-২৭')" class="px-3 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-[#065f46] border border-emerald-200 text-xs font-semibold">২০২৬-২৭</button>
+                                <button type="button" onclick="setSessionChip('১৪৪৭-৪৮ হিঃ')" class="px-3 py-1 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-[#065f46] border border-emerald-200 text-xs font-semibold">১৪৪৭-৪৮ হিঃ</button>
+                                <button type="button" onclick="setSessionChip('2026')" class="px-3 py-1 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold">2026 (EN)</button>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">মোট নম্বর (পূর্ণমান)</label>
+                                <input type="text" id="qpFullMarks" value="১০০" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-[#065f46] outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">সময়</label>
+                                <input type="text" id="qpDuration" value="৩ ঘণ্টা" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-[#065f46] outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-slate-600 mb-1">সুন্দর হস্তাক্ষরের নম্বর (ঐচ্ছিক)</label>
+                                <input type="text" id="qpHandwriting" value="৪" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-[#065f46] outline-none">
+                            </div>
+                        </div>
+
+                        <button type="button" onclick="goToWizardStep(2)" class="w-full py-3.5 rounded-xl bg-[#065f46] hover:bg-emerald-800 text-white font-bold text-sm sm:text-base shadow-md transition flex items-center justify-center gap-2">
+                            <span>পরবর্তী ধাপ: প্রশ্ন তৈরি করুন</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+
+                    <!-- STEP 2: QUESTION BUILDER -->
+                    <div id="wizardStep2" class="hidden space-y-4">
+                        <div class="bg-white rounded-2xl p-4 border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                            <div>
+                                <h4 id="builderHeaderInfo" class="font-bold text-slate-900 text-sm sm:text-base">প্রথম বর্ষ • এসো আরবী শিখি</h4>
+                                <p class="text-xs text-slate-500">মূল প্রশ্ন ও ক, খ, গ উপ-প্রশ্ন যুক্ত করুন অথবা প্রশ্নব্যাংক থেকে বাছাই করুন</p>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" onclick="openBankPickerModal()" class="px-3.5 py-2 rounded-xl bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 text-xs font-bold flex items-center gap-1.5 transition">
+                                    <i data-lucide="database" class="w-4 h-4"></i> প্রশ্নব্যাংক থেকে যুক্ত করুন
+                                </button>
+                                <button type="button" onclick="addMainQuestion()" class="px-3.5 py-2 rounded-xl bg-[#065f46] hover:bg-emerald-800 text-white text-xs font-bold flex items-center gap-1.5 transition">
+                                    <i data-lucide="plus" class="w-4 h-4"></i> নতুন মূল প্রশ্ন
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="mainQuestionsContainer" class="space-y-4"></div>
+
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <button type="button" onclick="addMainQuestion()" class="flex-1 py-3 rounded-xl bg-white hover:bg-emerald-50 text-[#065f46] border-2 border-dashed border-[#065f46] font-bold text-sm transition">
+                                + আরও একটি মূল প্রশ্ন যোগ করুন
+                            </button>
+                            <button type="button" onclick="goToWizardStep(3)" class="flex-1 py-3 rounded-xl bg-[#065f46] hover:bg-emerald-800 text-white font-bold text-sm shadow-md transition">
+                                প্রিভিউ দেখুন →
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- STEP 3: PRINT PREVIEW & LAYOUT SETTINGS -->
+                    <div id="wizardStep3" class="hidden space-y-4">
+                        <div class="bg-white rounded-2xl p-4 border border-slate-200 flex flex-wrap items-center justify-between gap-3">
+                            <span id="layoutSummaryBadge" class="px-3 py-1 rounded-full bg-emerald-100 text-emerald-950 text-xs font-bold">
+                                A4 • পোর্ট্রেট • একক প্রশ্নপত্র
+                            </span>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" onclick="saveCurrentQuestionPaper()" class="px-4 py-2 rounded-xl bg-[#065f46] hover:bg-emerald-800 text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
+                                    <i data-lucide="save" class="w-4 h-4"></i> সংরক্ষণ করুন
+                                </button>
+                                <button type="button" onclick="printExamPaper()" class="px-4 py-2 rounded-xl bg-sky-700 hover:bg-sky-600 text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
+                                    <i data-lucide="printer" class="w-4 h-4"></i> সরাসরি প্রিন্ট / PDF সেভ
+                                </button>
+                                <button type="button" onclick="downloadWordDoc()" class="px-4 py-2 rounded-xl bg-indigo-700 hover:bg-indigo-600 text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 transition">
+                                    <i data-lucide="file-text" class="w-4 h-4"></i> Word (.doc)
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900 text-white rounded-2xl p-4 sm:p-5 space-y-4">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-sm font-bold text-sky-300 flex items-center gap-2">
+                                    <i data-lucide="sliders" class="w-4 h-4"></i> কাগজের সাইজ ও লেআউট সেটিংস
+                                </h4>
+                                <div class="flex items-center gap-2 text-xs">
+                                    <span>ফন্ট সাইজ:</span>
+                                    <button type="button" onclick="changePreviewFontSize(-1)" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 font-bold">-</button>
+                                    <span id="previewFontSizeLabel">14px</span>
+                                    <button type="button" onclick="changePreviewFontSize(1)" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 font-bold">+</button>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
+                                    <div class="text-slate-400 mb-2 font-semibold">কাগজের সাইজ:</div>
+                                    <div class="grid grid-cols-2 gap-1.5">
+                                        <button type="button" id="sizeA4Btn" onclick="setPaperConfig('size', 'A4')" class="py-2 rounded-lg bg-sky-600 text-white font-bold">A4 সাইজ<br><span class="text-[10px] font-normal">8.27"×11.69"</span></button>
+                                        <button type="button" id="sizeA5Btn" onclick="setPaperConfig('size', 'A5')" class="py-2 rounded-lg bg-slate-700 text-slate-300 font-bold">A5 সাইজ<br><span class="text-[10px] font-normal">5.83"×8.27"</span></button>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
+                                    <div class="text-slate-400 mb-2 font-semibold">ওরিয়েন্টেশন:</div>
+                                    <div class="grid grid-cols-2 gap-1.5">
+                                        <button type="button" id="orientPortraitBtn" onclick="setPaperConfig('orientation', 'portrait')" class="py-2.5 rounded-lg bg-sky-600 text-white font-bold">পোর্ট্রেট</button>
+                                        <button type="button" id="orientLandscapeBtn" onclick="setPaperConfig('orientation', 'landscape')" class="py-2.5 rounded-lg bg-slate-700 text-slate-300 font-bold">ল্যান্ডস্কেপ</button>
+                                    </div>
+                                </div>
+
+                                <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700">
+                                    <div class="text-slate-400 mb-2 font-semibold">প্রশ্নপত্র কলাম:</div>
+                                    <div class="grid grid-cols-2 gap-1.5">
+                                        <button type="button" id="colSingleBtn" onclick="setPaperConfig('columns', 'single')" class="py-2.5 rounded-lg bg-sky-600 text-white font-bold">একক প্রশ্নপত্র</button>
+                                        <button type="button" id="colDualBtn" onclick="setPaperConfig('columns', 'dual')" class="py-2.5 rounded-lg bg-slate-700 text-slate-300 font-bold">দ্বৈত কলাম (২টি)</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-300/80 p-3 sm:p-6 rounded-2xl overflow-x-auto flex justify-center">
+                            <div id="printAreaContainer" class="bg-white text-black shadow-2xl transition-all" style="width: 210mm; min-height: 297mm; padding: 12mm;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 2: QUESTION BANK MANAGER -->
+                <div id="examViewBank" class="hidden bg-white rounded-2xl p-6 border border-slate-200 space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">সংরক্ষিত প্রশ্নব্যাংক</h3>
+                            <p class="text-xs text-slate-500">আরবি, বাংলা, গণিত ও ইংরেজি বিষয়ের সংরক্ষিত প্রশ্নসমূহ</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <select id="bankFilterLang" onchange="renderQuestionBank()" class="px-3 py-2 rounded-xl border border-slate-300 text-xs font-semibold bg-white">
+                                <option value="all">সকল ভাষা</option>
+                                <option value="bn">বাংলা</option>
+                                <option value="ar">العربية (আরবি)</option>
+                                <option value="en">English</option>
+                            </select>
+                            <button onclick="startNewPaper()" class="px-3.5 py-2 rounded-xl bg-[#065f46] text-white text-xs font-bold">+ নতুন প্রশ্নপত্র</button>
+                        </div>
+                    </div>
+                    <div id="questionBankList" class="space-y-3"></div>
+                </div>
+
+                <!-- VIEW 3: SAVED QUESTION PAPERS -->
+                <div id="examViewSaved" class="hidden bg-white rounded-2xl p-6 border border-slate-200 space-y-4">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                        <div>
+                            <h3 class="text-lg font-bold text-slate-900">সংরক্ষিত প্রশ্নপত্রসমূহ</h3>
+                            <p class="text-xs text-slate-500">পূর্বের তৈরি করা প্রশ্নপত্রগুলো প্রিভিউ, এডিট বা ডিলিট করুন</p>
+                        </div>
+                        <button onclick="startNewPaper()" class="px-3.5 py-2 rounded-xl bg-[#065f46] text-white text-xs font-bold">+ নতুন তৈরি করুন</button>
+                    </div>
+                    <div id="savedPapersList" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                </div>
+
+                <!-- VIEW 4: JAMAT & KITAB SETTINGS -->
+                <div id="examViewSettings" class="hidden bg-white rounded-2xl p-6 border border-slate-200 space-y-6">
+                    <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">জামাত / শ্রেণি ও কিতাব সেটিংস</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-sm text-emerald-950 mb-3">জামাত / শ্রেণিসমূহ</h4>
+                            <div class="flex gap-2 mb-3">
+                                <input type="text" id="newJamatInput" placeholder="নতুন জামাতের নাম লিখুন..." class="flex-1 px-3 py-2 rounded-lg border border-slate-300 text-sm">
+                                <button onclick="addCustomJamat()" class="px-4 py-2 rounded-lg bg-[#065f46] text-white text-sm font-bold">+ যোগ</button>
+                            </div>
+                            <div id="jamatChipsList" class="flex flex-wrap gap-2"></div>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                            <h4 class="font-bold text-sm text-emerald-950 mb-3">কিতাব / বিষয়সমূহ</h4>
+                            <div class="flex gap-2 mb-3">
+                                <input type="text" id="newBookInput" placeholder="নতুন কিতাব বা বিষয়ের নাম..." class="flex-1 px-3 py-2 rounded-lg border border-slate-300 text-sm">
+                                <button onclick="addCustomBook()" class="px-4 py-2 rounded-lg bg-[#065f46] text-white text-sm font-bold">+ যোগ</button>
+                            </div>
+                            <div id="bookChipsList" class="flex flex-wrap gap-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 5: BACKUP & RESTORE -->
+                <div id="examViewBackup" class="hidden bg-white rounded-2xl p-6 border border-slate-200 space-y-5">
+                    <h3 class="text-lg font-bold text-slate-900 border-b border-slate-100 pb-3">ব্যাকআপ ও রিস্টোর (অফলাইন JSON)</h3>
+                    <p class="text-sm text-slate-600">আপনার সকল সংরক্ষিত প্রশ্নপত্র, প্রশ্নব্যাংক ও সেটিংস একটি JSON ফাইল হিসেবে ব্যাকআপ রাখতে পারেন এবং যেকোনো সময় রিস্টোর করতে পারেন।</p>
+                    <div class="flex flex-wrap gap-3">
+                        <button onclick="exportBackupJSON()" class="px-5 py-3 rounded-xl bg-[#065f46] hover:bg-emerald-800 text-white text-sm font-bold flex items-center gap-2">
+                            <i data-lucide="download" class="w-4 h-4"></i> ব্যাকআপ ফাইল ডাউনলোড করুন (.json)
+                        </button>
+                        <label class="px-5 py-3 rounded-xl bg-sky-700 hover:bg-sky-600 text-white text-sm font-bold flex items-center gap-2 cursor-pointer">
+                            <i data-lucide="upload" class="w-4 h-4"></i> ব্যাকআপ ফাইল রিস্টোর করুন
+                            <input type="file" accept=".json" onchange="importBackupJSON(event)" class="hidden">
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==================== SUB-MODULE B: NOTICE MANAGEMENT ==================== -->
+            <div id="adminModuleNotices" class="hidden bg-white rounded-2xl p-6 border border-slate-200 space-y-6">
+                <h3 class="text-lg font-bold text-slate-900">নতুন নোটিশ প্রকাশ করুন</h3>
+                <form onsubmit="handleAddNotice(event)" class="space-y-3 bg-slate-50 p-4 rounded-xl border border-slate-200">
+                    <input type="text" id="newNoticeTitle" required placeholder="নোটিশের শিরোনাম লিখুন..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm outline-none">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <select id="newNoticeCategory" class="px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-white outline-none">
+                            <option value="জরুরি বিজ্ঞপ্তি">জরুরি বিজ্ঞপ্তি</option>
+                            <option value="ভর্তি সংক্রান্ত">ভর্তি সংক্রান্ত</option>
+                            <option value="পরীক্ষা সংক্রান্ত">পরীক্ষা সংক্রান্ত</option>
+                            <option value="মাহফিল ও অনুষ্ঠান">মাহফিল ও অনুষ্ঠান</option>
+                        </select>
+                        <input type="text" id="newNoticeDate" value="২২ নভেম্বর, ২০২৬" class="px-4 py-2.5 rounded-xl border border-slate-300 text-sm outline-none">
+                    </div>
+                    <textarea id="newNoticeBody" rows="3" required placeholder="নোটিশের বিস্তারিত বিবরণ..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm outline-none"></textarea>
+                    <button type="submit" class="px-6 py-2.5 rounded-xl bg-[#065f46] hover:bg-emerald-800 text-white text-sm font-bold transition">
+                        নোটিশ প্রকাশ করুন
+                    </button>
+                </form>
+
+                <div>
+                    <h4 class="font-bold text-slate-800 text-sm mb-3">প্রকাশিত নোটিশসমূহ</h4>
+                    <div id="adminNoticeManageList" class="space-y-2.5"></div>
+                </div>
+            </div>
+
+            <!-- ==================== SUB-MODULE C: ADMISSION APPLICATIONS ==================== -->
+            <div id="adminModuleAdmissions" class="hidden bg-white rounded-2xl p-6 border border-slate-200 space-y-4">
+                <h3 class="text-lg font-bold text-slate-900">অনলাইন ভর্তি আবেদনসমূহ</h3>
+                <div id="adminApplicationsList" class="space-y-3"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FLOATING WHATSAPP & FACEBOOK BUTTONS ==================== -->
+    <div class="fixed bottom-5 right-4 z-30 flex flex-col items-center gap-3 no-print">
+        <a href="https://wa.me/8801700000000?text=আসসালামু%20আলাইকুম,%20জামিয়াতুল%20আবরার%20আল%20ইসলামিয়া%20আনোয়ারা%20কমপ্লেক্স%20সম্পর্কে%20জানতে%20চাই।" target="_blank" rel="noopener" title="হোয়াটসঅ্যাপ" class="w-12 h-12 rounded-full bg-[#25D366] text-white shadow-lg flex items-center justify-center transition active:scale-95 border-2 border-white">
+            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.274.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.1.824z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/search/top?q=জামিয়াতুল%20আবরার%20আল%20ইসলামিয়া%20আনোয়ারা%20কমপ্লেক্স" target="_blank" rel="noopener" title="ফেসবুক পেজ" class="w-12 h-12 rounded-full bg-[#1877F2] text-white shadow-lg flex items-center justify-center transition active:scale-95 border-2 border-white">
+            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+        </a>
+    </div>
+
+    <!-- ==================== MODALS ==================== -->
+
+    <!-- 1. ADMIN LOGIN MODAL (Firebase Email/Password + Demo Fallback) -->
+    <div id="adminLoginModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-xs z-50 hidden items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-emerald-100">
+            <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-xl bg-[#065f46] text-amber-300 flex items-center justify-center">
+                        <i data-lucide="lock" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">অ্যাডমিন লগইন</h3>
+                        <p class="text-xs text-slate-500">Firebase অ্যাকাউন্ট বা ডেমো মোড</p>
+                    </div>
+                </div>
+                <button onclick="closeModal('adminLoginModal')" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleAdminLogin(event)" class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">অ্যাডমিন ইমেইল</label>
+                    <input type="email" id="adminEmailInput" required placeholder="admin@jamiatulabrar.edu.bd" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-[#065f46] outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">পাসওয়ার্ড</label>
+                    <input type="password" id="adminPasswordInput" required placeholder="••••••••" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:border-[#065f46] outline-none">
+                </div>
+                <p id="authErrorMsg" class="hidden text-xs text-rose-600 font-semibold"></p>
+                <button type="submit" id="adminLoginSubmitBtn" class="w-full py-3 rounded-xl bg-[#065f46] hover:bg-emerald-800 text-white font-bold text-sm shadow-md transition">
+                    লগইন করুন
+                </button>
+            </form>
+
+            <div class="mt-4 pt-3 border-t border-slate-100 text-center">
+                <button type="button" onclick="enterLocalDemoAdmin()" class="text-xs font-semibold text-emerald-800 hover:underline">
+                    অফলাইন / ডেমো মোডে অ্যাডমিন প্যানেল দেখুন
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. GUARDIAN PORTAL MODAL (Student Attendance & Info Lookup by Roll) -->
+    <div id="guardianModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-bold text-emerald-950">অভিভাবক পোর্টাল (উপস্থিতি ও তথ্য)</h3>
+                <button onclick="closeModal('guardianModal')" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <p class="text-xs text-slate-600 mb-3">শিক্ষার্থীর রোল নম্বর (যেমন: <strong>101</strong>, <strong>102</strong>, <strong>201</strong>) দিয়ে উপস্থিতি ও তথ্য দেখুন, অথবা Qmmsoft পোর্টালে যান।</p>
+
+            <div class="flex gap-2 mb-3">
+                <input type="text" id="guardianRollInput" placeholder="রোল নম্বর (যেমন: 101)" class="flex-1 px-3.5 py-2 rounded-xl border border-slate-300 text-sm outline-none focus:border-[#065f46]">
+                <button type="button" onclick="lookupStudentByRoll()" class="px-4 py-2 rounded-xl bg-[#065f46] text-white text-sm font-bold">খুঁজুন</button>
+            </div>
+
+            <div id="guardianResultBox" class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-xs text-slate-800 mb-4">
+                <strong>নমুনা তথ্য:</strong> রোল <strong>101</strong> (মুহাম্মদ জুবায়ের — কিতাব বিভাগ ১ম বর্ষ) — উপস্থিতি: <strong>৯৬%</strong> • অবস্থা: <strong>নিয়মিত</strong>।
+            </div>
+
+            <div class="flex gap-2">
+                <button onclick="triggerInstallApp(); closeModal('guardianModal');" class="flex-1 py-2.5 rounded-xl bg-emerald-100 text-emerald-950 text-xs font-bold">অ্যাপ ইনস্টল গাইড</button>
+                <button onclick="closeModal('guardianModal')" class="flex-1 py-2.5 rounded-xl bg-[#065f46] text-white text-xs font-bold">বন্ধ করুন</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. PWA INSTALL MODAL -->
+    <div id="installModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-bold text-emerald-950">Chrome-এ খুলুন / অ্যাপ ইনস্টল করুন</h3>
+                <button onclick="closeModal('installModal')" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <p class="text-sm text-slate-600 mb-3">
+                মাদরাসার নোটিশ, উপস্থিতি ও তথ্য মোবাইলে সহজে পেতে <strong>Google Chrome</strong> ব্রাউজারের মেনু (⋮) থেকে <strong>"Install app"</strong> অথবা <strong>"Add to Home screen"</strong> নির্বাচন করুন।
+            </p>
+            <button onclick="closeModal('installModal')" class="w-full py-2.5 rounded-xl bg-[#065f46] text-white text-sm font-bold">ঠিক আছে</button>
+        </div>
+    </div>
+
+    <!-- 4. GENERAL INFO MODAL -->
+    <div id="infoModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 hidden items-center justify-center p-4 no-print">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl">
+            <div class="flex items-center justify-between mb-3">
+                <h3 id="infoModalTitle" class="text-lg font-bold text-emerald-950"></h3>
+                <button onclick="closeModal('infoModal')" class="p-1.5 rounded-lg text-slate-400 hover:bg-slate-100"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <p id="infoModalBody" class="text-sm text-slate-600 leading-relaxed mb-5"></p>
+            <button onclick="closeModal('infoModal')" class="w-full py-2.5 rounded-xl bg-[#065f46] text-white text-sm font-bold">ঠিক আছে</button>
+        </div>
+    </div>
+
+    <!-- ==================== FIREBASE + PWA + APP SCRIPT ==================== -->
+    <script>
+        lucide.createIcons();
+
+        // ==================== 1. FIREBASE CONFIGURATION ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyB8CJ4MZGD2ihkSXZL4hg4qMuUtS6M003E",
+            authDomain: "jamiatul-abrar-complex.firebaseapp.com",
+            projectId: "jamiatul-abrar-complex",
+            storageBucket: "jamiatul-abrar-complex.firebasestorage.app",
+            messagingSenderId: "1066314625295",
+            appId: "1:1066314625295:web:ee09263075609ce2808e7a",
+            measurementId: "G-2065RDE3PE"
+        };
+
+        let auth = null;
+        let db = null;
+        let firebaseReady = false;
+        let currentUser = null;
+        let isDemoAdmin = false;
+
+        try {
+            if (typeof firebase !== 'undefined' && firebaseConfig.apiKey) {
+                firebase.initializeApp(firebaseConfig);
+                auth = firebase.auth();
+                db = firebase.firestore();
+                firebaseReady = true;
+            }
+        } catch (err) {
+            console.warn('Firebase init fallback:', err);
+            firebaseReady = false;
+        }
+
+        // ==================== 2. DYNAMIC PWA MANIFEST & SERVICE WORKER ====================
+        let deferredInstallPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+        });
+
+        function triggerInstallApp() {
+            if (deferredInstallPrompt) {
+                deferredInstallPrompt.prompt();
+                deferredInstallPrompt.userChoice.then(() => {
+                    deferredInstallPrompt = null;
+                });
+            } else {
+                openModal('installModal');
+            }
+        }
+
+        (function setupPWA() {
+            try {
+                const manifest = {
+                    name: "জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স",
+                    short_name: "জামিয়াতুল আবরার",
+                    start_url: "./",
+                    display: "standalone",
+                    background_color: "#065f46",
+                    theme_color: "#065f46",
+                    orientation: "portrait-primary",
+                    icons: [
+                        {
+                            src: "https://placehold.co/192x192/065f46/ffffff?text=JAA",
+                            sizes: "192x192",
+                            type: "image/png"
+                        },
+                        {
+                            src: "https://placehold.co/512x512/065f46/ffffff?text=JAA",
+                            sizes: "512x512",
+                            type: "image/png"
+                        }
+                    ]
+                };
+                const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+                const manifestURL = URL.createObjectURL(manifestBlob);
+                const link = document.createElement('link');
+                link.rel = 'manifest';
+                link.href = manifestURL;
+                document.head.appendChild(link);
+
+                if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+                    const swCode = `
+                        const CACHE_NAME = 'jaa-complex-v1';
+                        self.addEventListener('install', (event) => {
+                            self.skipWaiting();
+                        });
+                        self.addEventListener('activate', (event) => {
+                            event.waitUntil(clients.claim());
+                        });
+                        self.addEventListener('fetch', (event) => {
+                            if (event.request.method !== 'GET') return;
+                            event.respondWith(
+                                fetch(event.request).catch(() => caches.match(event.request))
+                            );
+                        });
+                    `;
+                    const swBlob = new Blob([swCode], { type: 'application/javascript' });
+                    const swURL = URL.createObjectURL(swBlob);
+                    navigator.serviceWorker.register(swURL).catch(() => {});
+                }
+            } catch (e) {
+                console.warn('PWA setup note:', e);
+            }
+        })();
+
+        // ==================== 3. LOCAL FALLBACK & INITIAL DATA ====================
+        const STORAGE_KEYS = {
+            NOTICES: 'jaa_notices_v2',
+            ADMISSIONS: 'jaa_admissions_v2',
+            JAMATS: 'jaa_jamats_v2',
+            BOOKS: 'jaa_books_v2',
+            BANK: 'jaa_question_bank_v2',
+            SAVED_PAPERS: 'jaa_saved_papers_v2'
+        };
+
+        const defaultNotices = [
+            {
+                id: 'n_1',
+                title: "নতুন শিক্ষাবর্ষে নূরানী, তাহফিযুল কুরআন, কিতাব বিভাগ ও তালীমুদ্দীন একাডেমীতে ভর্তি চলছে",
+                category: "ভর্তি সংক্রান্ত",
+                date: "২২ নভেম্বর, ২০২৬",
+                body: "জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স (নলাগড়িয়া, ভাকুর্তা, সাভার, ঢাকা)-এ নতুন শিক্ষাবর্ষে নূরানী, তাহফিযুল কুরআন, কিতাব বিভাগ (মাদানী নেসাব ও বেফাকের সমন্বয়ে ১ম থেকে ৫ম বর্ষ / শরহে বেকায়া) এবং তালীমুদ্দীন একাডেমীতে ভর্তি চলছে।"
+            },
+            {
+                id: 'n_2',
+                title: "বার্ষিক ইসলামী মহাসম্মেলন, ওলামায়ে কেরামের মিলনমেলা ও শিক্ষাসফর",
+                category: "মাহফিল ও অনুষ্ঠান",
+                date: "১৫ নভেম্বর, ২০২৬",
+                body: "কমপ্লেক্সের নিয়মিত দ্বীনি ও সহশিক্ষা কার্যক্রমের অংশ হিসেবে বার্ষিক ইসলামী মহাসম্মেলন, ওলামায়ে কেরামের মিলনমেলা এবং শিক্ষার্থীদের শিক্ষাসফর অনুষ্ঠিত হবে।"
+            },
+            {
+                id: 'n_3',
+                title: "'আনদিয়াতুত তুল্লাব' অঙ্গসংগঠনের সৃজনশীল ও বক্তৃতা কার্যক্রম",
+                category: "জরুরি বিজ্ঞপ্তি",
+                date: "১০ নভেম্বর, ২০২৬",
+                body: "শিক্ষার্থীদের দক্ষতা ও সৃজনশীলতা বিকাশে প্রতিষ্ঠানটির 'আনদিয়াতুত তুল্লাব' অঙ্গসংগঠনের পক্ষ থেকে নিয়মিত সাপ্তাহিক সভা ও প্রতিযোগিতা আয়োজিত হচ্ছে।"
+            }
+        ];
+
+        const defaultJamats = [
+            "নূরানী বিভাগ",
+            "তাহফিযুল কুরআন বিভাগ",
+            "প্রথম বর্ষ (ইবতেদায়ী)",
+            "দ্বিতীয় বর্ষ",
+            "তৃতীয় বর্ষ",
+            "চতুর্থ বর্ষ",
+            "পঞ্চম বর্ষ (শরহে বেকায়া)",
+            "তালীমুদ্দীন একাডেমী"
+        ];
+
+        const defaultBooks = [
+            "এসো আরবী শিখি",
+            "আরবী ভাষা ও সাহিত্য",
+            "মীযানুস সরফ ও মুনশাইব",
+            "নাহবেমীর",
+            "বাংলা সাহিত্য ও ব্যাকরণ",
+            "প্রাথমিক গণিত",
+            "English For Today",
+            "তাজবীদ ও মাসআলা"
+        ];
+
+        const defaultQuestionBank = [
+            {
+                id: 'qb_1',
+                lang: 'ar',
+                book: 'এসো আরবী শিখি',
+                stimulus: 'أجب عن الأسئلة الآتية باللغة العربية: (নিচের প্রশ্নগুলোর আরবিতে উত্তর দাও)',
+                marks: '১০',
+                subQuestions: [
+                    { label: 'أ', type: 'অনুবাদ', text: 'مَا اسْمُ مَدْرَسَتِكَ وَأَيْنَ تَقَعُ؟', marks: '৫' },
+                    { label: 'ب', type: 'ব্যাকরণ', text: 'حَوِّلْ الجُمَلَ الآتِيَةَ إِلَى الجَمْعِ: هَذَا طَالِبٌ مُجْتَهِدٌ.', marks: '৫' }
+                ]
+            },
+            {
+                id: 'qb_2',
+                lang: 'bn',
+                book: 'বাংলা সাহিত্য ও ব্যাকরণ',
+                stimulus: 'নিচের প্রশ্নগুলোর সংক্ষিপ্ত উত্তর দাও:',
+                marks: '১০',
+                subQuestions: [
+                    { label: 'ক', type: 'জ্ঞানমূলক', text: 'সন্ধি কাকে বলে? উদাহরণসহ প্রকারভেদ লেখ।', marks: '৫' },
+                    { label: 'খ', type: 'সৃজনশীল', text: '“আদর্শ ছাত্রজীবন” বিষয়ে একটি অনুচ্ছেদ রচনা কর।', marks: '৫' }
+                ]
+            },
+            {
+                id: 'qb_3',
+                lang: 'bn',
+                book: 'প্রাথমিক গণিত',
+                stimulus: 'সমাধান কর:',
+                marks: '১০',
+                subQuestions: [
+                    { label: 'ক', type: 'সংক্ষিপ্ত', text: 'একটি মাদরাসার কিতাব বিভাগে ১২৫ জন এবং হিফয বিভাগে ৮৫ জন ছাত্র আছে। মোট ছাত্র সংখ্যা কত?', marks: '৫' },
+                    { label: 'খ', type: 'সংক্ষিপ্ত', text: 'সরল কর: (৪৫ + ২৫) × ৪ - ৮০ ÷ ২', marks: '৫' }
+                ]
+            },
+            {
+                id: 'qb_4',
+                lang: 'en',
+                book: 'English For Today',
+                stimulus: 'Translate the following sentences into English:',
+                marks: '10',
+                subQuestions: [
+                    { label: 'a', type: 'অনুবাদ', text: 'আমাদের মাদরাসাটি একটি শান্ত ও সুন্দর পরিবেশে অবস্থিত।', marks: '5' },
+                    { label: 'b', type: 'অনুবাদ', text: 'আমরা প্রতিদিন ফজরের পর পবিত্র কুরআন তিলাওয়াত করি।', marks: '5' }
+                ]
+            }
+        ];
+
+        const sampleStudents = {
+            "101": { name: "মুহাম্মদ জুবায়ের", dept: "কিতাব বিভাগ (১ম বর্ষ)", attendance: "৯৬%", status: "নিয়মিত" },
+            "102": { name: "আব্দুল্লাহ আল মামুন", dept: "তাহফিযুল কুরআন বিভাগ", attendance: "৯৮%", status: "নিয়মিত" },
+            "201": { name: "মাহমুদুল হাসান", dept: "নূরানী বিভাগ", attendance: "৯২%", status: "নিয়মিত" }
+        };
+
+        function loadState(key, fallback) {
+            try {
+                const raw = localStorage.getItem(key);
+                return raw ? JSON.parse(raw) : fallback;
+            } catch (e) {
+                return fallback;
+            }
+        }
+
+        function saveState(key, val) {
+            try {
+                localStorage.setItem(key, JSON.stringify(val));
+            } catch (e) {}
+        }
+
+        let notices = loadState(STORAGE_KEYS.NOTICES, defaultNotices);
+        let admissions = loadState(STORAGE_KEYS.ADMISSIONS, []);
+        let jamats = loadState(STORAGE_KEYS.JAMATS, defaultJamats);
+        let books = loadState(STORAGE_KEYS.BOOKS, defaultBooks);
+        let questionBank = loadState(STORAGE_KEYS.BANK, defaultQuestionBank);
+        let savedPapers = loadState(STORAGE_KEYS.SAVED_PAPERS, []);
+
+        // ==================== 4. FIRESTORE REAL-TIME LISTENERS ====================
+        function initFirestoreListeners() {
+            if (!firebaseReady || !db) {
+                document.getElementById('liveCloudBadge').textContent = 'Local Demo Mode';
+                return;
+            }
+
+            // Publicly readable notices
+            db.collection('notices').orderBy('createdAt', 'desc').onSnapshot((snap) => {
+                if (!snap.empty) {
+                    notices = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    saveState(STORAGE_KEYS.NOTICES, notices);
+                    renderPublicNotices();
+                    if (hasAdminAccess()) refreshAdminData();
+                } else {
+                    renderPublicNotices();
+                }
+            }, (err) => {
+                console.warn('Notices listener fallback to local:', err.message);
+                renderPublicNotices();
+            });
+        }
+
+        function syncAdminFirestoreCollections() {
+            if (!firebaseReady || !db || !currentUser) return;
+
+            db.collection('admissions').orderBy('createdAt', 'desc').onSnapshot((snap) => {
+                admissions = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                saveState(STORAGE_KEYS.ADMISSIONS, admissions);
+                refreshAdminData();
+            }, () => {});
+
+            db.collection('questionBank').orderBy('createdAt', 'desc').onSnapshot((snap) => {
+                if (!snap.empty) {
+                    const cloudBank = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                    questionBank = cloudBank;
+                    saveState(STORAGE_KEYS.BANK, questionBank);
+                    refreshAdminData();
+                }
+            }, () => {});
+
+            db.collection('questionPapers').orderBy('createdAt', 'desc').onSnapshot((snap) => {
+                savedPapers = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                saveState(STORAGE_KEYS.SAVED_PAPERS, savedPapers);
+                refreshAdminData();
+            }, () => {});
+        }
+
+        if (firebaseReady && auth) {
+            auth.onAuthStateChanged((user) => {
+                currentUser = user;
+                if (user) {
+                    document.getElementById('adminAuthStatusText').textContent = `Firebase Admin: ${user.email}`;
+                    syncAdminFirestoreCollections();
+                } else if (!isDemoAdmin) {
+                    document.getElementById('adminDashboardView').classList.add('hidden');
+                    document.getElementById('publicPortalView').classList.remove('hidden');
+                }
+            });
+        }
+
+        initFirestoreListeners();
+
+        // ==================== 5. PUBLIC PORTAL & GUARDIAN LOOKUP ====================
+        function showPublicPortal() {
+            document.getElementById('adminDashboardView').classList.add('hidden');
+            document.getElementById('publicPortalView').classList.remove('hidden');
+        }
+
+        function toggleDrawer(open) {
+            const drawer = document.getElementById('navDrawer');
+            const backdrop = document.getElementById('drawerBackdrop');
+            if (open) {
+                backdrop.classList.remove('hidden');
+                setTimeout(() => backdrop.classList.remove('opacity-0'), 10);
+                drawer.classList.remove('drawer-exit');
+                drawer.classList.add('drawer-enter');
+            } else {
+                backdrop.classList.add('opacity-0');
+                drawer.classList.remove('drawer-enter');
+                drawer.classList.add('drawer-exit');
+                setTimeout(() => backdrop.classList.add('hidden'), 300);
+            }
+        }
+
+        function selectDepartment(deptName) {
+            const select = document.getElementById('appDept');
+            if (select) select.value = deptName;
+        }
+
+        function renderPublicNotices() {
+            const container = document.getElementById('noticeList');
+            container.innerHTML = notices.map((n, idx) => `
+                <div onclick="openNoticeByIndex(${idx})"
+                     class="p-4 rounded-xl border border-slate-200/80 hover:border-emerald-400 hover:bg-emerald-50/30 transition cursor-pointer flex items-start justify-between gap-3 group">
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap mb-1">
+                            <span class="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-emerald-100 text-[#065f46]">${escapeHtml(n.category)}</span>
+                            <span class="text-xs text-slate-400">${escapeHtml(n.date)}</span>
+                        </div>
+                        <h4 class="font-bold text-slate-800 group-hover:text-[#065f46] text-sm sm:text-base transition">${escapeHtml(n.title)}</h4>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-slate-400 group-hover:text-[#065f46] shrink-0 mt-1"></i>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+        renderPublicNotices();
+
+        function openNoticeByIndex(idx) {
+            const n = notices[idx];
+            if (n) openInfoModal(n.title, n.body);
+        }
+
+        function lookupStudentByRoll() {
+            const roll = document.getElementById('guardianRollInput').value.trim();
+            const box = document.getElementById('guardianResultBox');
+            if (!roll) {
+                box.innerHTML = 'অনুগ্রহ করে শিক্ষার্থীর রোল নম্বর লিখুন (যেমন: <strong>101</strong>)।';
+                return;
+            }
+            const st = sampleStudents[roll];
+            if (st) {
+                box.innerHTML = `
+                    <div class="font-bold text-[#065f46] text-sm mb-1">✓ শিক্ষার্থী তথ্য (রোল: ${escapeHtml(roll)})</div>
+                    <p><strong>নাম:</strong> ${escapeHtml(st.name)}</p>
+                    <p><strong>বিভাগ:</strong> ${escapeHtml(st.dept)}</p>
+                    <p><strong>উপস্থিতি:</strong> ${escapeHtml(st.attendance)} • <strong>অবস্থা:</strong> ${escapeHtml(st.status)}</p>
+                `;
+            } else {
+                box.innerHTML = `রোল <strong>${escapeHtml(roll)}</strong>-এর বিস্তারিত তথ্যের জন্য মাদরাসার অফিস বা Qmmsoft পোর্টালে যোগাযোগ করুন।`;
+            }
+        }
+
+        async function handleAdmissionSubmit(e) {
+            e.preventDefault();
+            const dept = document.getElementById('appDept').value;
+            const student = document.getElementById('appStudentName').value;
+            const prev = document.getElementById('appPrevClass').value || 'প্রযোজ্য নয়';
+            const guardian = document.getElementById('appGuardianName').value;
+            const phone = document.getElementById('appPhone').value;
+            const regNo = 'JAA-' + Math.floor(1000 + Math.random() * 9000);
+
+            const entry = {
+                regNo,
+                dept,
+                student,
+                prev,
+                guardian,
+                phone,
+                status: 'Pending',
+                date: new Date().toLocaleDateString('bn-BD'),
+                createdAt: Date.now()
+            };
+
+            if (firebaseReady && db) {
+                try {
+                    await db.collection('admissions').add(entry);
+                } catch (err) {
+                    console.warn('Firestore admission fallback:', err.message);
+                }
+            }
+
+            admissions.unshift({ id: 'adm_' + Date.now(), ...entry });
+            saveState(STORAGE_KEYS.ADMISSIONS, admissions);
+
+            document.getElementById('receiptDetails').innerHTML = `
+                <p><strong>আবেদন নম্বর:</strong> ${regNo}</p>
+                <p><strong>শিক্ষার্থীর নাম:</strong> ${escapeHtml(student)}</p>
+                <p><strong>বিভাগ:</strong> ${escapeHtml(dept)}</p>
+                <p><strong>অভিভাবক:</strong> ${escapeHtml(guardian)} (${escapeHtml(phone)})</p>
+            `;
+            document.getElementById('admissionReceipt').classList.remove('hidden');
+            e.target.reset();
+        }
+
+        // ==================== 6. ADMIN AUTH & DASHBOARD ====================
+        function hasAdminAccess() {
+            return Boolean(currentUser || isDemoAdmin);
+        }
+
+        function openAdminGate() {
+            if (hasAdminAccess()) {
+                enterAdminDashboard();
+                return;
+            }
+            document.getElementById('authErrorMsg').classList.add('hidden');
+            openModal('adminLoginModal');
+        }
+
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('adminEmailInput').value.trim();
+            const password = document.getElementById('adminPasswordInput').value;
+            const errEl = document.getElementById('authErrorMsg');
+            const btn = document.getElementById('adminLoginSubmitBtn');
+            errEl.classList.add('hidden');
+
+            if (!firebaseReady || !auth) {
+                enterLocalDemoAdmin();
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'লগইন হচ্ছে...';
+
+            try {
+                await auth.signInWithEmailAndPassword(email, password);
+                isDemoAdmin = false;
+                closeModal('adminLoginModal');
+                enterAdminDashboard();
+            } catch (err) {
+                errEl.textContent = 'লগইন ব্যর্থ হয়েছে: সঠিক ইমেইল ও পাসওয়ার্ড দিন অথবা নিচে ডেমো মোড ব্যবহার করুন।';
+                errEl.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'লগইন করুন';
+            }
+        }
+
+        function enterLocalDemoAdmin() {
+            isDemoAdmin = true;
+            document.getElementById('adminAuthStatusText').textContent = 'Local Demo Admin Mode (অফলাইন/ডেমো)';
+            closeModal('adminLoginModal');
+            enterAdminDashboard();
+        }
+
+        async function logoutAdmin() {
+            isDemoAdmin = false;
+            if (firebaseReady && auth && currentUser) {
+                try {
+                    await auth.signOut();
+                } catch (e) {}
+            }
+            currentUser = null;
+            showPublicPortal();
+        }
+
+        function enterAdminDashboard() {
+            document.getElementById('publicPortalView').classList.add('hidden');
+            document.getElementById('adminDashboardView').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            refreshAdminData();
+        }
+
+        function switchAdminMainTab(tab) {
+            const tabs = ['exam', 'notices', 'admissions'];
+            tabs.forEach(t => {
+                const btn = document.getElementById('adminTab' + t.charAt(0).toUpperCase() + t.slice(1));
+                const mod = document.getElementById('adminModule' + t.charAt(0).toUpperCase() + t.slice(1));
+                if (t === tab) {
+                    btn.className = 'py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold bg-[#065f46] text-white shadow-xs transition flex items-center justify-center gap-1.5';
+                    mod.classList.remove('hidden');
+                } else {
+                    btn.className = 'py-2.5 px-2 rounded-xl text-xs sm:text-sm font-bold text-slate-600 hover:bg-slate-50 transition flex items-center justify-center gap-1.5';
+                    mod.classList.add('hidden');
+                }
+            });
+            refreshAdminData();
+        }
+
+        function refreshAdminData() {
+            document.getElementById('adminBadgeCount').textContent = admissions.length;
+            document.getElementById('bankCountBadge').textContent = questionBank.length;
+            document.getElementById('savedPapersBadge').textContent = savedPapers.length;
+
+            const adminNoticeList = document.getElementById('adminNoticeManageList');
+            adminNoticeList.innerHTML = notices.map((n, idx) => `
+                <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3">
+                    <div>
+                        <span class="text-[11px] font-bold text-[#065f46] bg-emerald-100 px-2 py-0.5 rounded">${escapeHtml(n.category)}</span>
+                        <span class="text-xs text-slate-400 ml-1">${escapeHtml(n.date)}</span>
+                        <h5 class="font-bold text-slate-900 text-sm mt-1">${escapeHtml(n.title)}</h5>
+                    </div>
+                    <button onclick="deleteNoticeByIndex(${idx})" class="p-2 rounded-lg text-rose-600 hover:bg-rose-50" title="মুছে ফেলুন">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `).join('');
+
+            const adminAppList = document.getElementById('adminApplicationsList');
+            if (admissions.length === 0) {
+                adminAppList.innerHTML = '<p class="text-sm text-slate-500 text-center py-6">এখনো কোনো অনলাইন ভর্তি আবেদন জমা পড়েনি।</p>';
+            } else {
+                adminAppList.innerHTML = admissions.map(a => `
+                    <div class="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200 flex flex-wrap items-center justify-between gap-2">
+                        <div>
+                            <div class="font-bold text-slate-900 text-sm">${escapeHtml(a.student)} <span class="text-[#065f46]">(${escapeHtml(a.dept)})</span></div>
+                            <div class="text-xs text-slate-600">অভিভাবক: ${escapeHtml(a.guardian)} • মোবাইল: ${escapeHtml(a.phone)} • পূর্ববর্তী: ${escapeHtml(a.prev)}</div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-lg bg-[#065f46] text-white text-xs font-bold">${escapeHtml(a.regNo || 'JAA')}</span>
+                    </div>
+                `).join('');
+            }
+            lucide.createIcons();
+        }
+
+        async function handleAddNotice(e) {
+            e.preventDefault();
+            const title = document.getElementById('newNoticeTitle').value;
+            const category = document.getElementById('newNoticeCategory').value;
+            const date = document.getElementById('newNoticeDate').value;
+            const body = document.getElementById('newNoticeBody').value;
+
+            const newNotice = { title, category, date, body, createdAt: Date.now() };
+
+            if (firebaseReady && db && currentUser) {
+                try {
+                    await db.collection('notices').add(newNotice);
+                    e.target.reset();
+                    openInfoModal('সফল', 'নতুন নোটিশটি Firestore-এ প্রকাশিত হয়েছে।');
+                    return;
+                } catch (err) {
+                    console.warn('Firestore notice add fallback:', err.message);
+                }
+            }
+
+            notices.unshift({ id: 'n_' + Date.now(), ...newNotice });
+            saveState(STORAGE_KEYS.NOTICES, notices);
+            renderPublicNotices();
+            refreshAdminData();
+            e.target.reset();
+            openInfoModal('সফল', 'নতুন নোটিশটি নোটিশ বোর্ডে প্রকাশিত হয়েছে।');
+        }
+
+        async function deleteNoticeByIndex(idx) {
+            const target = notices[idx];
+            if (!target) return;
+
+            if (firebaseReady && db && currentUser && typeof target.id === 'string' && !target.id.startsWith('n_')) {
+                try {
+                    await db.collection('notices').doc(target.id).delete();
+                    return;
+                } catch (err) {}
+            }
+
+            notices.splice(idx, 1);
+            saveState(STORAGE_KEYS.NOTICES, notices);
+            renderPublicNotices();
+            refreshAdminData();
+        }
+
+        // ==================== 7. QUESTION PAPER GENERATOR & BANK ====================
+        let currentPaper = null;
+        let paperLayout = {
+            size: 'A4',
+            orientation: 'portrait',
+            columns: 'single',
+            fontSize: 14
+        };
+
+        function showExamSubView(view) {
+            const views = ['Home', 'Wizard', 'Bank', 'Saved', 'Settings', 'Backup'];
+            views.forEach(v => {
+                const el = document.getElementById('examView' + v);
+                if (el) el.classList.add('hidden');
+            });
+            const target = document.getElementById('examView' + view.charAt(0).toUpperCase() + view.slice(1));
+            if (target) target.classList.remove('hidden');
+
+            document.getElementById('backToExamHomeBtn').classList.toggle('hidden', view === 'home');
+
+            if (view === 'bank') renderQuestionBank();
+            if (view === 'saved') renderSavedPapers();
+            if (view === 'settings') renderJamatBookSettings();
+            refreshAdminData();
+            lucide.createIcons();
+        }
+
+        function populateDropdowns() {
+            const jamatSelect = document.getElementById('qpJamat');
+            const bookSelect = document.getElementById('qpBook');
+            jamatSelect.innerHTML = jamats.map(j => `<option value="${escapeHtml(j)}">${escapeHtml(j)}</option>`).join('');
+            bookSelect.innerHTML = books.map(b => `<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join('');
+        }
+
+        function startNewPaper() {
+            populateDropdowns();
+            currentPaper = {
+                id: 'qp_' + Date.now(),
+                lang: 'bn',
+                instName: 'জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স',
+                instAddress: 'নলাগড়িয়া, ভাকুর্তা, সাভার, ঢাকা।',
+                jamat: jamats[2] || 'প্রথম বর্ষ (ইবতেদায়ী)',
+                book: books[0] || 'এসো আরবী শিখি',
+                subject: 'আরবী ভাষা',
+                examName: 'বার্ষিক পরীক্ষা',
+                date: '২২/১১/২০২৬',
+                session: '২০২৬',
+                fullMarks: '১০০',
+                duration: '৩ ঘণ্টা',
+                handwriting: '৪',
+                questions: [
+                    {
+                        id: 'mq_' + Date.now(),
+                        stimulus: 'নিচের প্রশ্নগুলোর উত্তর দাও:',
+                        marks: '১০',
+                        subQuestions: [
+                            { label: 'ক', type: 'জ্ঞানমূলক', text: '', marks: '৫' },
+                            { label: 'খ', type: 'অনুধাবন', text: '', marks: '৫' }
+                        ]
+                    }
+                ]
+            };
+            syncFormFromCurrentPaper();
+            showExamSubView('wizard');
+            goToWizardStep(1);
+        }
+
+        function syncFormFromCurrentPaper() {
+            setPaperLanguage(currentPaper.lang, false);
+            document.getElementById('qpInstName').value = currentPaper.instName;
+            document.getElementById('qpInstAddress').value = currentPaper.instAddress;
+            document.getElementById('qpJamat').value = currentPaper.jamat;
+            document.getElementById('qpBook').value = currentPaper.book;
+            document.getElementById('qpSubject').value = currentPaper.subject;
+            document.getElementById('qpExamName').value = currentPaper.examName;
+            document.getElementById('qpDate').value = currentPaper.date;
+            document.getElementById('qpSession').value = currentPaper.session;
+            document.getElementById('qpFullMarks').value = currentPaper.fullMarks;
+            document.getElementById('qpDuration').value = currentPaper.duration;
+            document.getElementById('qpHandwriting').value = currentPaper.handwriting;
+        }
+
+        function syncCurrentPaperFromForm() {
+            currentPaper.instName = document.getElementById('qpInstName').value;
+            currentPaper.instAddress = document.getElementById('qpInstAddress').value;
+            currentPaper.jamat = document.getElementById('qpJamat').value;
+            currentPaper.book = document.getElementById('qpBook').value;
+            currentPaper.subject = document.getElementById('qpSubject').value;
+            currentPaper.examName = document.getElementById('qpExamName').value;
+            currentPaper.date = document.getElementById('qpDate').value;
+            currentPaper.session = document.getElementById('qpSession').value;
+            currentPaper.fullMarks = document.getElementById('qpFullMarks').value;
+            currentPaper.duration = document.getElementById('qpDuration').value;
+            currentPaper.handwriting = document.getElementById('qpHandwriting').value;
+        }
+
+        function setPaperLanguage(lang, autoLocalize = true) {
+            currentPaper.lang = lang;
+            const activeCls = 'py-2.5 rounded-xl border-2 border-[#065f46] bg-emerald-50 text-emerald-950 font-bold text-sm transition';
+            const inactiveCls = 'py-2.5 rounded-xl border border-slate-300 bg-white text-slate-700 font-bold text-sm transition';
+
+            document.getElementById('langBtnBn').className = lang === 'bn' ? activeCls : inactiveCls;
+            document.getElementById('langBtnEn').className = lang === 'en' ? activeCls : inactiveCls;
+            document.getElementById('langBtnAr').className = (lang === 'ar' ? activeCls : inactiveCls) + ' font-arabic';
+
+            if (autoLocalize) {
+                if (lang === 'ar') {
+                    document.getElementById('qpInstName').value = 'جامعة الأبرار الإسلامية أنوارا كمبليكس';
+                    document.getElementById('qpInstAddress').value = 'نالاغاريا، بهاكورتا، سافار، داكا';
+                    document.getElementById('qpExamName').value = 'الامتحان السنوي';
+                    document.getElementById('qpSubject').value = 'اللغة العربية';
+                    document.getElementById('qpSession').value = '١٤٤٧-٤٨ هـ';
+                    document.getElementById('qpDuration').value = '٣ ساعات';
+                    document.getElementById('qpFullMarks').value = '١٠٠';
+                } else if (lang === 'en') {
+                    document.getElementById('qpInstName').value = 'Jamiatul Abrar Al Islamia Anwara Complex';
+                    document.getElementById('qpInstAddress').value = 'Nalagaria, Bhakurta, Savar, Dhaka';
+                    document.getElementById('qpExamName').value = 'Annual Examination';
+                    document.getElementById('qpSubject').value = 'English';
+                    document.getElementById('qpSession').value = '2026';
+                    document.getElementById('qpDuration').value = '3 Hours';
+                    document.getElementById('qpFullMarks').value = '100';
+                } else {
+                    document.getElementById('qpInstName').value = 'জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স';
+                    document.getElementById('qpInstAddress').value = 'নলাগড়িয়া, ভাকুর্তা, সাভার, ঢাকা।';
+                    document.getElementById('qpExamName').value = 'বার্ষিক পরীক্ষা';
+                    document.getElementById('qpSubject').value = 'আরবী ভাষা';
+                    document.getElementById('qpSession').value = '২০২৬';
+                    document.getElementById('qpDuration').value = '৩ ঘণ্টা';
+                    document.getElementById('qpFullMarks').value = '১০০';
+                }
+            }
+        }
+
+        function setSessionChip(val) {
+            document.getElementById('qpSession').value = val;
+        }
+
+        function goToWizardStep(step) {
+            syncCurrentPaperFromForm();
+            [1, 2, 3].forEach(s => {
+                document.getElementById('wizardStep' + s).classList.toggle('hidden', s !== step);
+                const btn = document.getElementById('stepBtn' + s);
+                btn.className = s === step
+                    ? 'py-2 rounded-xl bg-[#065f46] text-white transition'
+                    : 'py-2 rounded-xl bg-slate-100 text-slate-600 transition';
+            });
+
+            if (step === 2) {
+                document.getElementById('builderHeaderInfo').textContent = `${currentPaper.jamat} • ${currentPaper.book}`;
+                renderMainQuestionsBuilder();
+            } else if (step === 3) {
+                renderPaperPreview();
+            }
+        }
+
+        function getQuestionNumberLabel(idx, lang) {
+            const bnNums = ['১ম', '২য়', '৩য়', '৪র্থ', '৫ম', '৬ষ্ঠ', '৭ম', '৮ম', '৯ম', '১০ম'];
+            const arNums = ['الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع', 'الثامن'];
+            if (lang === 'ar') return 'السؤال ' + (arNums[idx] || (idx + 1));
+            if (lang === 'en') return 'Question ' + (idx + 1);
+            return (bnNums[idx] || (idx + 1) + 'নং') + ' মূল প্রশ্ন';
+        }
+
+        function getNextSubLabel(count, lang) {
+            const bnLabels = ['ক', 'খ', 'গ', 'ঘ', 'ঙ', 'চ', 'ছ', 'জ'];
+            const arLabels = ['أ', 'ب', 'ج', 'د', 'هـ', 'و', 'ز', 'ح'];
+            const enLabels = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+            if (lang === 'ar') return arLabels[count] || String(count + 1);
+            if (lang === 'en') return enLabels[count] || String(count + 1);
+            return bnLabels[count] || String(count + 1);
+        }
+
+        function renderMainQuestionsBuilder() {
+            const container = document.getElementById('mainQuestionsContainer');
+            const isAr = currentPaper.lang === 'ar';
+            const dirAttr = isAr ? 'dir="rtl"' : 'dir="ltr"';
+            const fontCls = isAr ? 'font-arabic text-lg' : '';
+
+            container.innerHTML = currentPaper.questions.map((mq, mIdx) => `
+                <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs space-y-4">
+                    <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100">
+                        <span class="font-bold text-emerald-950 text-sm sm:text-base">${getQuestionNumberLabel(mIdx, currentPaper.lang)}</span>
+                        <div class="flex items-center gap-2">
+                            <button type="button" onclick="saveQuestionToBank(${mIdx})" class="px-3 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-800 text-xs font-bold border border-sky-200 transition">
+                                + প্রশ্নব্যাংকে সেভ
+                            </button>
+                            ${currentPaper.questions.length > 1 ? `
+                            <button type="button" onclick="removeMainQuestion(${mIdx})" class="p-1.5 rounded-lg text-rose-600 hover:bg-rose-50" title="মুছুন">
+                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            </button>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+                        <div class="sm:col-span-9">
+                            <label class="block text-xs font-bold text-slate-600 mb-1">মূল প্রশ্ন / উদ্দীপক</label>
+                            <textarea ${dirAttr} rows="2" oninput="currentPaper.questions[${mIdx}].stimulus = this.value"
+                                placeholder="${isAr ? 'اكتب السؤال الرئيسي هنا...' : 'মূল প্রশ্ন বা উদ্দীপক লিখুন...'}"
+                                class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm outline-none focus:border-[#065f46] ${fontCls}">${escapeHtml(mq.stimulus)}</textarea>
+                        </div>
+                        <div class="sm:col-span-3">
+                            <label class="block text-xs font-bold text-slate-600 mb-1">মোট নম্বর</label>
+                            <input type="text" oninput="currentPaper.questions[${mIdx}].marks = this.value" value="${escapeHtml(mq.marks)}"
+                                class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm font-bold text-center outline-none focus:border-[#065f46]">
+                        </div>
+                    </div>
+
+                    <div class="space-y-2.5 pl-2 sm:pl-4 border-l-2 border-emerald-200">
+                        ${mq.subQuestions.map((sq, sIdx) => `
+                            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200/80 space-y-2">
+                                <div class="flex items-center justify-between gap-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="px-2.5 py-0.5 rounded-lg bg-[#065f46] text-white text-xs font-bold">${escapeHtml(sq.label)})</span>
+                                        <select onchange="currentPaper.questions[${mIdx}].subQuestions[${sIdx}].type = this.value" class="px-2.5 py-1 rounded-lg border border-slate-300 text-xs bg-white font-medium">
+                                            ${['জ্ঞানমূলক', 'অনুধাবন', 'অনুবাদ', 'ব্যাকরণ', 'সৃজনশীল', 'সংক্ষিপ্ত'].map(t =>
+                                                `<option value="${t}" ${sq.type === t ? 'selected' : ''}>${t}</option>`
+                                            ).join('')}
+                                        </select>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <input type="text" value="${escapeHtml(sq.marks)}" oninput="currentPaper.questions[${mIdx}].subQuestions[${sIdx}].marks = this.value"
+                                            placeholder="নম্বর" class="w-14 px-2 py-1 rounded-lg border border-slate-300 text-xs text-center font-bold bg-white">
+                                        <button type="button" onclick="removeSubQuestion(${mIdx}, ${sIdx})" class="text-rose-500 hover:text-rose-700 p-1">
+                                            <i data-lucide="x" class="w-4 h-4"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <input type="text" ${dirAttr} value="${escapeHtml(sq.text)}" oninput="currentPaper.questions[${mIdx}].subQuestions[${sIdx}].text = this.value"
+                                    placeholder="${isAr ? 'اكتب السؤال الفرعي...' : 'উপ-প্রশ্ন (' + sq.label + ') লিখুন...'}"
+                                    class="w-full px-3 py-2 rounded-lg border border-slate-300 text-sm bg-white outline-none focus:border-[#065f46] ${fontCls}">
+                            </div>
+                        `).join('')}
+
+                        <button type="button" onclick="addSubQuestion(${mIdx})" class="px-3.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-[#065f46] text-xs font-bold border border-emerald-200 transition">
+                            + উপ-প্রশ্ন যোগ করুন
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function addMainQuestion() {
+            const isAr = currentPaper.lang === 'ar';
+            currentPaper.questions.push({
+                id: 'mq_' + Date.now(),
+                stimulus: isAr ? 'أجب عن الأسئلة الآتية:' : (currentPaper.lang === 'en' ? 'Answer the following questions:' : 'নিচের প্রশ্নগুলোর উত্তর দাও:'),
+                marks: isAr ? '١٠' : (currentPaper.lang === 'en' ? '10' : '১০'),
+                subQuestions: [
+                    { label: getNextSubLabel(0, currentPaper.lang), type: 'জ্ঞানমূলক', text: '', marks: isAr ? '٥' : '৫' }
+                ]
+            });
+            renderMainQuestionsBuilder();
+        }
+
+        function removeMainQuestion(mIdx) {
+            currentPaper.questions.splice(mIdx, 1);
+            renderMainQuestionsBuilder();
+        }
+
+        function addSubQuestion(mIdx) {
+            const count = currentPaper.questions[mIdx].subQuestions.length;
+            currentPaper.questions[mIdx].subQuestions.push({
+                label: getNextSubLabel(count, currentPaper.lang),
+                type: 'জ্ঞানমূলক',
+                text: '',
+                marks: currentPaper.lang === 'ar' ? '٥' : '৫'
+            });
+            renderMainQuestionsBuilder();
+        }
+
+        function removeSubQuestion(mIdx, sIdx) {
+            currentPaper.questions[mIdx].subQuestions.splice(sIdx, 1);
+            renderMainQuestionsBuilder();
+        }
+
+        async function saveQuestionToBank(mIdx) {
+            const q = JSON.parse(JSON.stringify(currentPaper.questions[mIdx]));
+            const bankDoc = {
+                lang: currentPaper.lang,
+                book: currentPaper.book,
+                stimulus: q.stimulus,
+                marks: q.marks,
+                subQuestions: q.subQuestions,
+                createdAt: Date.now()
+            };
+
+            if (firebaseReady && db && currentUser) {
+                try {
+                    await db.collection('questionBank').add(bankDoc);
+                    openInfoModal('প্রশ্নব্যাংকে সংরক্ষিত', 'প্রশ্নটি Firestore প্রশ্নব্যাংকে যুক্ত হয়েছে।');
+                    return;
+                } catch (err) {}
+            }
+
+            questionBank.unshift({ id: 'qb_' + Date.now(), ...bankDoc });
+            saveState(STORAGE_KEYS.BANK, questionBank);
+            refreshAdminData();
+            openInfoModal('প্রশ্নব্যাংকে সংরক্ষিত', 'প্রশ্নটি প্রশ্নব্যাংকে যুক্ত করা হয়েছে।');
+        }
+
+        function openBankPickerModal() {
+            const list = document.getElementById('bankPickerList');
+            list.innerHTML = questionBank.map(item => `
+                <div class="p-3.5 rounded-xl border border-slate-200 hover:border-emerald-400 bg-slate-50 space-y-2">
+                    <div class="flex items-center justify-between gap-2">
+                        <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-950">${escapeHtml(item.book)} (${item.lang.toUpperCase()})</span>
+                        <button onclick="insertFromBank('${item.id}')" class="px-3 py-1 rounded-lg bg-[#065f46] text-white text-xs font-bold hover:bg-emerald-800">
+                            + প্রশ্নপত্রে যুক্ত করুন
+                        </button>
+                    </div>
+                    <p class="text-sm font-semibold text-slate-800 ${item.lang === 'ar' ? 'font-arabic text-right' : ''}">${escapeHtml(item.stimulus)}</p>
+                </div>
+            `).join('');
+            openModal('bankPickerModal');
+        }
+
+        function insertFromBank(bankId) {
+            const found = questionBank.find(b => b.id === bankId);
+            if (found) {
+                const clone = JSON.parse(JSON.stringify(found));
+                clone.id = 'mq_' + Date.now();
+                currentPaper.questions.push(clone);
+                renderMainQuestionsBuilder();
+                closeModal('bankPickerModal');
+            }
+        }
+
+        // ==================== 8. PRINT PREVIEW, DUAL COLUMN & WORD EXPORT ====================
+        function setPaperConfig(key, value) {
+            paperLayout[key] = value;
+            if (key === 'columns' && value === 'dual') {
+                paperLayout.orientation = 'landscape';
+            }
+            updateLayoutButtonsUI();
+            renderPaperPreview();
+        }
+
+        function changePreviewFontSize(delta) {
+            paperLayout.fontSize = Math.max(10, Math.min(20, paperLayout.fontSize + delta));
+            document.getElementById('previewFontSizeLabel').textContent = paperLayout.fontSize + 'px';
+            renderPaperPreview();
+        }
+
+        function updateLayoutButtonsUI() {
+            const active = 'py-2 rounded-lg bg-sky-600 text-white font-bold';
+            const inactive = 'py-2 rounded-lg bg-slate-700 text-slate-300 font-bold';
+
+            document.getElementById('sizeA4Btn').className = paperLayout.size === 'A4' ? active : inactive;
+            document.getElementById('sizeA5Btn').className = paperLayout.size === 'A5' ? active : inactive;
+            document.getElementById('orientPortraitBtn').className = paperLayout.orientation === 'portrait' ? active : inactive;
+            document.getElementById('orientLandscapeBtn').className = paperLayout.orientation === 'landscape' ? active : inactive;
+            document.getElementById('colSingleBtn').className = paperLayout.columns === 'single' ? active : inactive;
+            document.getElementById('colDualBtn').className = paperLayout.columns === 'dual' ? active : inactive;
+
+            const sizeTxt = paperLayout.size;
+            const orientTxt = paperLayout.orientation === 'portrait' ? 'পোর্ট্রেট' : 'ল্যান্ডস্কেপ';
+            const colTxt = paperLayout.columns === 'single' ? 'একক প্রশ্নপত্র' : 'দ্বৈত কলাম (২টি)';
+            document.getElementById('layoutSummaryBadge').textContent = `${sizeTxt} • ${orientTxt} • ${colTxt}`;
+        }
+
+        function generateSinglePaperHTML() {
+            const p = currentPaper;
+            const isAr = p.lang === 'ar';
+            const isEn = p.lang === 'en';
+            const langClass = isAr ? 'exam-paper-ar' : (isEn ? 'exam-paper-en' : 'exam-paper-bn');
+
+            const lblSession = isAr ? 'العام الدراسي:' : (isEn ? 'Session:' : 'শিক্ষাবর্ষ:');
+            const lblClass = isAr ? 'الصف / المرحلة' : (isEn ? 'Class / Jamat' : 'শ্রেণি/জামাত');
+            const lblBook = isAr ? 'الكتاب / المنهج' : (isEn ? 'Book' : 'কিতাব/বই');
+            const lblSub = isAr ? 'المادة' : (isEn ? 'Subject' : 'বিষয়');
+            const lblDate = isAr ? 'التاريخ' : (isEn ? 'Date' : 'তারিখ');
+            const lblTime = isAr ? 'الوقت' : (isEn ? 'Time' : 'সময়');
+            const lblMarks = isAr ? 'الدرجة الكاملة' : (isEn ? 'Full Marks' : 'পূর্ণমান');
+            const hwNote = p.handwriting
+                ? (isAr ? `(حسن الخط: ${p.handwriting})` : (isEn ? `(Handwriting: ${p.handwriting})` : `(সুন্দর হস্তাক্ষর: ${p.handwriting})`))
+                : '';
+
+            const questionsHTML = p.questions.map((mq, idx) => {
+                const numPrefix = isAr ? `${idx + 1}.` : (isEn ? `${idx + 1}.` : `${toBanglaDigit(idx + 1)}।`);
+                const subsHTML = mq.subQuestions.map(sq => `
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; margin-top:3px; padding-${isAr ? 'right' : 'left'}:16px;">
+                        <div><strong>${escapeHtml(sq.label)})</strong> ${escapeHtml(sq.text)}</div>
+                        <div style="font-weight:bold; white-space:nowrap;">${escapeHtml(sq.marks)}</div>
+                    </div>
+                `).join('');
+
+                return `
+                    <div style="margin-bottom: 10px;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; font-weight:bold;">
+                            <div>${numPrefix} ${escapeHtml(mq.stimulus)}</div>
+                            <div style="white-space:nowrap;">${escapeHtml(mq.marks)}</div>
+                        </div>
+                        ${subsHTML}
+                    </div>
+                `;
+            }).join('');
+
+            return `
+                <div class="${langClass}" style="font-size: ${paperLayout.fontSize}px; line-height: 1.55; color: #000;">
+                    <div style="text-align:center; border-bottom: 2px double #000; padding-bottom: 6px; margin-bottom: 8px;">
+                        <div style="font-size: 1.25em; font-weight: 700;">
+                            ${escapeHtml(p.examName)} — ${escapeHtml(p.instName)} • ${lblSession} ${escapeHtml(p.session)}
+                        </div>
+                        <div style="font-size: 0.88em; margin-top: 2px;">${escapeHtml(p.instAddress)}</div>
+                    </div>
+
+                    <table style="width:100%; border-collapse:collapse; font-size:0.9em; border-bottom: 1.5px solid #000; margin-bottom: 10px;">
+                        <tr>
+                            <td style="width:52%; padding:1px 0;"><strong>${lblClass}</strong> : ${escapeHtml(p.jamat)}</td>
+                            <td style="width:48%; padding:1px 0;"><strong>${lblDate}</strong> : ${escapeHtml(p.date)}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:1px 0;"><strong>${lblBook}</strong> : ${escapeHtml(p.book)}</td>
+                            <td style="padding:1px 0;"><strong>${lblTime}</strong> : ${escapeHtml(p.duration)}</td>
+                        </tr>
+                        <tr>
+                            <td style="padding:1px 0 4px 0;"><strong>${lblSub}</strong> : ${escapeHtml(p.subject)}</td>
+                            <td style="padding:1px 0 4px 0;"><strong>${lblMarks}</strong> : ${escapeHtml(p.fullMarks)} ${hwNote}</td>
+                        </tr>
+                    </table>
+
+                    <div>${questionsHTML}</div>
+                </div>
+            `;
+        }
+
+        function renderPaperPreview() {
+            const container = document.getElementById('printAreaContainer');
+            const singleHTML = generateSinglePaperHTML();
+
+            let width = '210mm';
+            let minHeight = '297mm';
+            if (paperLayout.size === 'A4' && paperLayout.orientation === 'landscape') {
+                width = '297mm';
+                minHeight = '210mm';
+            } else if (paperLayout.size === 'A5' && paperLayout.orientation === 'portrait') {
+                width = '148mm';
+                minHeight = '210mm';
+            } else if (paperLayout.size === 'A5' && paperLayout.orientation === 'landscape') {
+                width = '210mm';
+                minHeight = '148mm';
+            }
+
+            container.style.width = width;
+            container.style.minHeight = minHeight;
+            container.style.padding = '10mm';
+
+            if (paperLayout.columns === 'dual') {
+                container.innerHTML = `
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 10mm; align-items:start;">
+                        <div style="border-${currentPaper.lang === 'ar' ? 'left' : 'right'}: 1px dashed #64748b; padding-${currentPaper.lang === 'ar' ? 'left' : 'right'}: 5mm;">
+                            ${singleHTML}
+                        </div>
+                        <div>
+                            ${singleHTML}
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = singleHTML;
+            }
+        }
+
+        function printExamPaper() {
+            let styleTag = document.getElementById('dynamicPrintPageStyle');
+            if (!styleTag) {
+                styleTag = document.createElement('style');
+                styleTag.id = 'dynamicPrintPageStyle';
+                document.head.appendChild(styleTag);
+            }
+            styleTag.innerHTML = `@page { size: ${paperLayout.size} ${paperLayout.orientation}; margin: 8mm; }`;
+            window.print();
+        }
+
+        function downloadWordDoc() {
+            const content = document.getElementById('printAreaContainer').innerHTML;
+            const sourceHTML = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+                <head><meta charset='utf-8'><title>${escapeHtml(currentPaper.book)}</title></head>
+                <body style="font-family: 'Noto Serif Bengali', 'Amiri', serif;">${content}</body></html>
+            `;
+            const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${currentPaper.jamat}_${currentPaper.book}_প্রশ্নপত্র.doc`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        async function saveCurrentQuestionPaper() {
+            syncCurrentPaperFromForm();
+            const copy = JSON.parse(JSON.stringify(currentPaper));
+            copy.savedAt = new Date().toLocaleDateString('bn-BD');
+            copy.createdAt = Date.now();
+
+            if (firebaseReady && db && currentUser) {
+                try {
+                    await db.collection('questionPapers').add(copy);
+                    openInfoModal('সংরক্ষিত হয়েছে', 'প্রশ্নপত্রটি Firestore-এ সংরক্ষিত হয়েছে।');
+                    return;
+                } catch (err) {}
+            }
+
+            const existingIdx = savedPapers.findIndex(sp => sp.id === copy.id);
+            if (existingIdx >= 0) savedPapers[existingIdx] = copy;
+            else savedPapers.unshift(copy);
+            saveState(STORAGE_KEYS.SAVED_PAPERS, savedPapers);
+            refreshAdminData();
+            openInfoModal('সংরক্ষিত হয়েছে', 'প্রশ্নপত্রটি সংরক্ষিত প্রশ্নপত্র তালিকায় যুক্ত হয়েছে।');
+        }
+
+        // ==================== 9. BANK, SAVED PAPERS, SETTINGS & BACKUP ====================
+        function renderQuestionBank() {
+            const filter = document.getElementById('bankFilterLang').value;
+            const filtered = filter === 'all' ? questionBank : questionBank.filter(q => q.lang === filter);
+            const list = document.getElementById('questionBankList');
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<p class="text-sm text-slate-500 text-center py-6">এই ভাষায় কোনো প্রশ্ন সংরক্ষিত নেই।</p>';
+                return;
+            }
+
+            list.innerHTML = filtered.map(item => `
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex items-start justify-between gap-3">
+                    <div class="flex-1 ${item.lang === 'ar' ? 'text-right font-arabic' : ''}">
+                        <div class="flex items-center gap-2 mb-1 ${item.lang === 'ar' ? 'justify-end' : ''}">
+                            <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-950">${escapeHtml(item.book)}</span>
+                            <span class="text-xs text-slate-500">নম্বর: ${escapeHtml(item.marks)}</span>
+                        </div>
+                        <p class="font-bold text-slate-900 text-sm">${escapeHtml(item.stimulus)}</p>
+                        <ul class="text-xs text-slate-600 mt-1 space-y-0.5">
+                            ${item.subQuestions.map(s => `<li>${escapeHtml(s.label)}) ${escapeHtml(s.text)}</li>`).join('')}
+                        </ul>
+                    </div>
+                    <button onclick="deleteBankItem('${item.id}')" class="p-2 rounded-lg text-rose-600 hover:bg-rose-100 shrink-0" title="মুছুন">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        async function deleteBankItem(id) {
+            if (firebaseReady && db && currentUser && !String(id).startsWith('qb_')) {
+                try {
+                    await db.collection('questionBank').doc(id).delete();
+                    return;
+                } catch (err) {}
+            }
+            questionBank = questionBank.filter(q => q.id !== id);
+            saveState(STORAGE_KEYS.BANK, questionBank);
+            renderQuestionBank();
+            refreshAdminData();
+        }
+
+        function renderSavedPapers() {
+            const list = document.getElementById('savedPapersList');
+            if (savedPapers.length === 0) {
+                list.innerHTML = '<p class="text-sm text-slate-500 col-span-2 text-center py-8">এখনো কোনো প্রশ্নপত্র সংরক্ষণ করা হয়নি।</p>';
+                return;
+            }
+            list.innerHTML = savedPapers.map(p => `
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 flex flex-col justify-between gap-3">
+                    <div>
+                        <div class="flex items-center justify-between text-xs text-slate-500 mb-1">
+                            <span class="font-bold text-[#065f46]">${escapeHtml(p.examName)} (${escapeHtml(p.session)})</span>
+                            <span>${escapeHtml(p.date)}</span>
+                        </div>
+                        <h4 class="font-bold text-slate-900 text-base">${escapeHtml(p.jamat)} — ${escapeHtml(p.book)}</h4>
+                        <p class="text-xs text-slate-600 mt-0.5">বিষয়: ${escapeHtml(p.subject)} • পূর্ণমান: ${escapeHtml(p.fullMarks)}</p>
+                    </div>
+                    <div class="flex gap-2 pt-2 border-t border-slate-200">
+                        <button onclick="loadSavedPaper('${p.id}', 3)" class="flex-1 py-2 rounded-lg bg-[#065f46] text-white text-xs font-bold">প্রিভিউ ও প্রিন্ট</button>
+                        <button onclick="loadSavedPaper('${p.id}', 2)" class="px-3 py-2 rounded-lg bg-sky-100 text-sky-900 text-xs font-bold">এডিট</button>
+                        <button onclick="deleteSavedPaper('${p.id}')" class="px-3 py-2 rounded-lg bg-rose-100 text-rose-700 text-xs font-bold">মুছুন</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadSavedPaper(id, targetStep) {
+            const found = savedPapers.find(p => p.id === id);
+            if (found) {
+                populateDropdowns();
+                currentPaper = JSON.parse(JSON.stringify(found));
+                syncFormFromCurrentPaper();
+                showExamSubView('wizard');
+                goToWizardStep(targetStep);
+            }
+        }
+
+        async function deleteSavedPaper(id) {
+            if (firebaseReady && db && currentUser && !String(id).startsWith('qp_')) {
+                try {
+                    await db.collection('questionPapers').doc(id).delete();
+                    return;
+                } catch (err) {}
+            }
+            savedPapers = savedPapers.filter(p => p.id !== id);
+            saveState(STORAGE_KEYS.SAVED_PAPERS, savedPapers);
+            renderSavedPapers();
+            refreshAdminData();
+        }
+
+        function renderJamatBookSettings() {
+            document.getElementById('jamatChipsList').innerHTML = jamats.map((j, idx) => `
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-300 text-xs font-semibold text-slate-800">
+                    ${escapeHtml(j)}
+                    <button onclick="removeJamat(${idx})" class="text-rose-500 hover:text-rose-700 font-bold">×</button>
+                </span>
+            `).join('');
+
+            document.getElementById('bookChipsList').innerHTML = books.map((b, idx) => `
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-slate-300 text-xs font-semibold text-slate-800">
+                    ${escapeHtml(b)}
+                    <button onclick="removeBook(${idx})" class="text-rose-500 hover:text-rose-700 font-bold">×</button>
+                </span>
+            `).join('');
+        }
+
+        function addCustomJamat() {
+            const val = document.getElementById('newJamatInput').value.trim();
+            if (val) {
+                jamats.push(val);
+                saveState(STORAGE_KEYS.JAMATS, jamats);
+                document.getElementById('newJamatInput').value = '';
+                renderJamatBookSettings();
+            }
+        }
+
+        function removeJamat(idx) {
+            jamats.splice(idx, 1);
+            saveState(STORAGE_KEYS.JAMATS, jamats);
+            renderJamatBookSettings();
+        }
+
+        function addCustomBook() {
+            const val = document.getElementById('newBookInput').value.trim();
+            if (val) {
+                books.push(val);
+                saveState(STORAGE_KEYS.BOOKS, books);
+                document.getElementById('newBookInput').value = '';
+                renderJamatBookSettings();
+            }
+        }
+
+        function removeBook(idx) {
+            books.splice(idx, 1);
+            saveState(STORAGE_KEYS.BOOKS, books);
+            renderJamatBookSettings();
+        }
+
+        function exportBackupJSON() {
+            const payload = {
+                institution: 'জামিয়াতুল আবরার আল ইসলামিয়া আনোয়ারা কমপ্লেক্স',
+                exportedAt: new Date().toISOString(),
+                jamats,
+                books,
+                questionBank,
+                savedPapers,
+                notices
+            };
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Jamiatul_Abrar_Backup_${new Date().toISOString().slice(0, 10)}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importBackupJSON(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(evt) {
+                try {
+                    const data = JSON.parse(evt.target.result);
+                    if (data.jamats) { jamats = data.jamats; saveState(STORAGE_KEYS.JAMATS, jamats); }
+                    if (data.books) { books = data.books; saveState(STORAGE_KEYS.BOOKS, books); }
+                    if (data.questionBank) { questionBank = data.questionBank; saveState(STORAGE_KEYS.BANK, questionBank); }
+                    if (data.savedPapers) { savedPapers = data.savedPapers; saveState(STORAGE_KEYS.SAVED_PAPERS, savedPapers); }
+                    refreshAdminData();
+                    openInfoModal('রিস্টোর সম্পন্ন', 'ব্যাকআপ ফাইল থেকে ডেটা সফলভাবে পুনরুদ্ধার করা হয়েছে।');
+                } catch (err) {
+                    openInfoModal('ত্রুটি', 'সঠিক JSON ব্যাকআপ ফাইল নির্বাচন করুন।');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ==================== 10. UTILITIES & MODALS ====================
+        function toBanglaDigit(num) {
+            const map = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+            return String(num).replace(/\d/g, d => map[d]);
+        }
+
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function openModal(id) {
+            const m = document.getElementById(id);
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+        }
+
+        function closeModal(id) {
+            const m = document.getElementById(id);
+            m.classList.add('hidden');
+            m.classList.remove('flex');
+        }
+
+        function openGuardianModal() { openModal('guardianModal'); }
+        function openInfoModal(title, body) {
+            document.getElementById('infoModalTitle').textContent = title;
+            document.getElementById('infoModalBody').textContent = body;
+            openModal('infoModal');
+        }
+    </script>
+</body>
+</html>
