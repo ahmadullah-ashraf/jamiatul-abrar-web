@@ -2499,6 +2499,22 @@
         }
     
 
+function getSafeDb() {
+  if (typeof db !== "undefined" && db) return db;
+  if (typeof firebase !== "undefined" && firebase.apps && firebase.apps.length) {
+    return firebase.firestore();
+  }
+  return null;
+}
+
+function getSafeAuth() {
+  if (typeof auth !== "undefined" && auth) return auth;
+  if (typeof firebase !== "undefined" && firebase.apps && firebase.apps.length) {
+    return firebase.auth();
+  }
+  return null;
+}
+
 function toggleFeedbackAdmin() {
   const panel = document.getElementById("sfAdminPanel");
   if (panel) panel.classList.toggle("hidden");
@@ -2511,16 +2527,23 @@ async function submitSafeFeedback(e) {
   const msg = (document.getElementById("sfMessage")?.value || "").trim();
   if (!msg) return;
 
-  if (typeof db === "undefined" || !db) {
-    if (statusEl) { statusEl.className = "text-xs text-red-600"; statusEl.textContent = "Firestore পাওয়া যায়নি।"; }
+  const safeDb = getSafeDb();
+  if (!safeDb) {
+    if (statusEl) {
+      statusEl.className = "text-xs text-red-600";
+      statusEl.textContent = "Firebase যুক্ত নেই বা লোড হয়নি।";
+    }
     return;
   }
 
   if (btn) btn.disabled = true;
-  if (statusEl) { statusEl.className = "text-xs text-gray-600"; statusEl.textContent = "জমা হচ্ছে..."; }
+  if (statusEl) {
+    statusEl.className = "text-xs text-gray-600";
+    statusEl.textContent = "জমা হচ্ছে...";
+  }
 
   try {
-    await db.collection("complaints_suggestions").add({
+    await safeDb.collection("complaints_suggestions").add({
       type: document.getElementById("sfType")?.value || "পরামর্শ",
       sender: (document.getElementById("sfSender")?.value || "").trim() || "বেনামী",
       contact: (document.getElementById("sfContact")?.value || "").trim() || "নেই",
@@ -2528,9 +2551,16 @@ async function submitSafeFeedback(e) {
       createdAt: new Date().toISOString()
     });
     e.target.reset();
-    if (statusEl) { statusEl.className = "text-xs text-emerald-700"; statusEl.textContent = "সফলভাবে জমা হয়েছে।"; }
+    if (statusEl) {
+      statusEl.className = "text-xs text-emerald-700";
+      statusEl.textContent = "সফলভাবে জমা হয়েছে।";
+    }
   } catch (err) {
-    if (statusEl) { statusEl.className = "text-xs text-red-600"; statusEl.textContent = "জমা দিতে সমস্যা হয়েছে।"; }
+    console.error("Feedback submit error:", err);
+    if (statusEl) {
+      statusEl.className = "text-xs text-red-600";
+      statusEl.textContent = "জমা দিতে সমস্যা হয়েছে: " + (err.message || "ত্রুটি");
+    }
   } finally {
     if (btn) btn.disabled = false;
   }
@@ -2541,32 +2571,36 @@ async function loginFeedbackAdmin() {
   if (msgEl) msgEl.textContent = "";
   const email = (document.getElementById("sfAdminEmail")?.value || "").trim();
   const pass = document.getElementById("sfAdminPass")?.value || "";
-  if (typeof auth === "undefined" || !auth) {
+  const safeAuth = getSafeAuth();
+  if (!safeAuth) {
     if (msgEl) msgEl.textContent = "Auth পাওয়া যায়নি।";
     return;
   }
   try {
-    await auth.signInWithEmailAndPassword(email, pass);
+    await safeAuth.signInWithEmailAndPassword(email, pass);
     document.getElementById("sfLoginBox")?.classList.add("hidden");
     document.getElementById("sfListBox")?.classList.remove("hidden");
     loadSafeFeedbackList();
   } catch (err) {
-    if (msgEl) msgEl.textContent = "লগইন ব্যর্থ হয়েছে।";
+    console.error("Admin login error:", err);
+    if (msgEl) msgEl.textContent = "লগইন ব্যর্থ হয়েছে: " + (err.message || "ত্রুটি");
   }
 }
 
 async function logoutFeedbackAdmin() {
-  if (typeof auth !== "undefined" && auth) await auth.signOut();
+  const safeAuth = getSafeAuth();
+  if (safeAuth) await safeAuth.signOut();
   document.getElementById("sfLoginBox")?.classList.remove("hidden");
   document.getElementById("sfListBox")?.classList.add("hidden");
 }
 
 async function loadSafeFeedbackList() {
   const box = document.getElementById("sfItems");
-  if (!box || typeof db === "undefined" || !db) return;
+  const safeDb = getSafeDb();
+  if (!box || !safeDb) return;
   box.innerHTML = '<p class="text-xs text-gray-500">লোড হচ্ছে...</p>';
   try {
-    const snap = await db.collection("complaints_suggestions").orderBy("createdAt", "desc").get();
+    const snap = await safeDb.collection("complaints_suggestions").orderBy("createdAt", "desc").get();
     if (snap.empty) {
       box.innerHTML = '<p class="text-xs text-gray-500">কোনো তথ্য নেই।</p>';
       return;
@@ -2582,7 +2616,8 @@ async function loadSafeFeedbackList() {
     });
     box.innerHTML = html;
   } catch (err) {
-    box.innerHTML = '<p class="text-xs text-red-600">তালিকা দেখা যাচ্ছে না।</p>';
+    console.error("Load feedback error:", err);
+    box.innerHTML = '<p class="text-xs text-red-600">তালিকা দেখা যাচ্ছে না: ' + (err.message || "ত্রুটি") + '</p>';
   }
 }
 
