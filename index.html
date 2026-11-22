@@ -2265,6 +2265,9 @@
     <button type="button" onclick="saveCmsToFirestore()" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold">
       সেভ করুন
     </button>
+    <button type="button" onclick="addCmsCardClone()" class="px-3 py-1.5 rounded-lg bg-violet-700 hover:bg-violet-600 font-medium">
+      + কার্ড যুক্ত করুন
+    </button>
     <button type="button" onclick="resetCmsFromFirestore()" class="px-3 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600">
       রিলোড
     </button>
@@ -2786,6 +2789,44 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+
+
+function showCmsBarIfLoggedIn() {
+  const bar = document.getElementById("liveCmsBar");
+  if (!bar) return;
+  const hasAuthUser = !!(typeof auth !== "undefined" && auth && auth.currentUser);
+  const hasCurrentUser = !!(typeof currentUser !== "undefined" && currentUser);
+  const hasDemoAdmin = !!(typeof isDemoAdmin !== "undefined" && isDemoAdmin);
+  if (hasAuthUser || hasCurrentUser || hasDemoAdmin) {
+    bar.classList.remove("hidden");
+  }
+}
+
+function addCmsCardClone() {
+  const cards = Array.from(document.querySelectorAll(".grid > div, .grid > article")).filter((el) => {
+    const bar = document.getElementById("liveCmsBar");
+    return el && (!bar || !bar.contains(el)) && el.querySelector("h3, h2, p, img");
+  });
+  if (!cards.length) return;
+  const target = cards[cards.length - 1];
+  const clone = target.cloneNode(true);
+  target.parentNode.insertBefore(clone, target.nextSibling);
+  if (cmsTextActive) {
+    cmsTextActive = false;
+    toggleCmsTextEdit();
+  }
+  const statusEl = document.getElementById("cmsSaveStatus");
+  if (statusEl) statusEl.textContent = "নতুন কার্ড যুক্ত হয়েছে (সেভ করুন)";
+}
+
+setInterval(showCmsBarIfLoggedIn, 800);
+document.addEventListener("submit", function (e) {
+  if (e.target && (e.target.closest("#adminLoginModal") || e.target.id === "adminLoginForm")) {
+    setTimeout(showCmsBarIfLoggedIn, 400);
+    setTimeout(showCmsBarIfLoggedIn, 1200);
+  }
+}, true);
 
 </script>
 </body>
